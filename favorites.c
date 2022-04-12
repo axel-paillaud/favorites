@@ -15,7 +15,6 @@ int main(void)
 	do
 	{
 	get_input();
-	check_input();
 	}
 	while (check_input() != true);
 }
@@ -36,7 +35,6 @@ bool check_input()
 	{
 		arr[i] = n[i];
 	}
-	printf("%s\n", arr);
 	int result = strcmp(arr, exit);
 	if (result == 0 )
 	{
