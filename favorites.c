@@ -37,7 +37,8 @@ bool check_input()
 		arr[i] = n[i];
 	}
 	printf("%s\n", arr);
-	if ( arr == exit)
+	int result = strcmp(arr, exit);
+	if (result == 0 )
 	{
 		printf("Vous venez de taper exit\n");
 		return true;
