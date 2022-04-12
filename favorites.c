@@ -9,6 +9,7 @@ bool check_input();
 // global variable
 // 2100 car longueur max d'hyperlien IE est de 2083 caractères
 char input[2100];
+char mexit[4] = "exit";
 
 int main(void)
 {
@@ -27,7 +28,6 @@ char get_input()
 
 bool check_input()
 {
-	char exit[4] = "exit";
 	char *n = input;
 	int j = strlen(n);
 	char arr[j];
@@ -35,7 +35,7 @@ bool check_input()
 	{
 		arr[i] = n[i];
 	}
-	int result = strcmp(arr, exit);
+	int result = strcmp(arr, mexit);
 	if (result == 0 )
 	{
 		printf("Vous venez de taper exit\n");
