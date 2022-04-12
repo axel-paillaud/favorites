@@ -1,19 +1,24 @@
 #include <stdio.h>
 
 //prototype
-char get_link();
+char get_input();
 
 // global variable
-char link[50];
+// 2100 car longueur max d'hyperlien IE est de 2083 caractères
+char input[2100];
 
 int main(void)
 {
-	get_link();
-	printf("%s\n", link);
+	do
+	{
+	get_input();
+	printf("%s\n", input);
+	}
+	while (input != "exit");
 }
 
-char get_link()
+char get_input()
 {
 	printf("Pass the link: \n");
-	scanf("%49s", link);
+	scanf("%2099s", input);
 }
