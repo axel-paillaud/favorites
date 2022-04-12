@@ -4,12 +4,17 @@
 
 //prototype
 char get_input();
-bool check_input();
+bool check_exit();
+int check_input();
 
 // global variable
 // 2100 car longueur max d'hyperlien IE est de 2083 caractères
-char input[2100];
+char input[15];
+char get_link[2100];
 char mexit[4] = "exit";
+char mlink[4] = "link";
+char mnote[4] = "note";
+char mkey[3] = "key";
 
 int main(void)
 {
@@ -17,16 +22,16 @@ int main(void)
 	{
 	get_input();
 	}
-	while (check_input() != true);
+	while (check_exit() != true);
 }
 
 char get_input()
 {
-	printf("Pass the link: \n");
-	scanf("%2099s", input);
+	printf("What is the type of data you want to store ?\n");
+	scanf("%14s", input);
 }
 
-bool check_input()
+bool check_exit()
 {
 	char *n = input;
 	int j = strlen(n);
@@ -36,9 +41,41 @@ bool check_input()
 		arr[i] = n[i];
 	}
 	int result = strcmp(arr, mexit);
+	printf("%i\n", result);
 	if (result == 0 )
 	{
 		printf("Vous venez de taper exit\n");
 		return true;
 	}
+}
+
+int check_input()
+{
+	char *n = input;
+	int j = strlen(n);
+	char arr[j];
+	
+	strcpy(arr, n);
+
+	int resultlink = strcmp(arr, mlink);
+	int resultnote = strcmp(arr, mnote);
+	int resultkey = strcmp(arr, mkey);
+
+	if (resultlink == 0)
+	{
+		printf("Vous venez de taper link\n");
+		return 1;
+	}
+	else if (resultnote == 0)
+	{
+		printf("Vous venez de taper note\n");
+		return 2;
+	}
+	else if (resultkey == 0)
+	{
+		printf("Vous venez de taper key\n");
+		return 3;
+	}
+	else
+		return 0;
 }
