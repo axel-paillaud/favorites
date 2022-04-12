@@ -17,7 +17,7 @@ int main(void)
 	get_input();
 	check_input();
 	}
-	while (input != "exit");
+	while (check_input() != true);
 }
 
 char get_input()
@@ -28,8 +28,8 @@ char get_input()
 
 bool check_input()
 {
+	char exit[4] = "exit";
 	char *n = input;
-	char exit[4] = "exit"; 
 	int j = strlen(n);
 	char arr[j];
 	for (int i = 0; i <= j; i++)
