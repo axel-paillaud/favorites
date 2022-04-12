@@ -3,17 +3,17 @@
 //prototype
 char get_link();
 
+// global variable
+char link[50];
+
 int main(void)
 {
-	char *link;
-	link = get_link();
+	get_link();
 	printf("%s\n", link);
 }
 
 char get_link()
 {
-	char *link;
 	printf("Pass the link: \n");
-	scanf("%s", link);
-	return link;
+	scanf("%49s", link);
 }
