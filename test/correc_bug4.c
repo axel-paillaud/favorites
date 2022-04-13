@@ -42,6 +42,7 @@ bool check_exit()
 		arr[i] = n[i];
 	}
 	int result = strcmp(arr, mexit);
+	printf("%i\n", result);
 	if (result == 0 )
 	{
 		printf("Vous venez de taper exit\n");
