@@ -20,8 +20,23 @@ int main(void)
 {
 	do
 	{
-	get_input();
-	check_input();
+		get_input();
+		if (check_input() == 1)
+		{
+			// todo
+		}
+		else if (check_input() == 2)
+		{
+			// todo
+		}
+		else if (check_input() == 3)
+		{
+			// todo
+		}
+		else
+		{
+			// todo
+		}
 	}
 	while (check_exit() != true);
 }
