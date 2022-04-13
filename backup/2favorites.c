@@ -35,7 +35,7 @@ char get_input()
 bool check_exit()
 {
 	char *n = input;
-	int j = strlen(n) + 1;
+	int j = strlen(n);
 	char arr[j];
 	for (int i = 0; i <= j; i++)
 	{
@@ -52,7 +52,7 @@ bool check_exit()
 int check_input()
 {
 	char *n = input;
-	int j = strlen(n) + 1;
+	int j = strlen(n);
 	char arr[j];
 	
 	strcpy(arr, n);
