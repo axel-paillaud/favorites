@@ -2,12 +2,14 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 //prototype
 char get_input();
 bool check_exit();
 int check_input();
 char* get_link();
+char * get_tag();
 
 // global variable
 // 2100 car longueur max d'hyperlien IE est de 2083 caractères
@@ -23,7 +25,7 @@ int main(void)
 	{
 		// Ici, ouvrir le fichier favorites.csv. S'il n'existe pas, le créer
 		// Penser à fclose le fichier à la fin
-		FILE *file = fopen("favorites.csv", "a");
+		FILE *file = fopen("link.csv", "a");
 		if (file == NULL)
 			return 1;
 
@@ -38,6 +40,10 @@ int main(void)
 			char *var_link = get_link();
 
 			fprintf(file, "%s;\n", var_link);
+
+			//test de ma fct get_tag
+			char * var_tag = get_tag();
+			printf("%s\n", var_tag);
 
 			fclose(file);
 
@@ -129,4 +135,41 @@ char* get_link()
 	strcpy(var_link, tmp);
 
 	return var_link;
+}
+
+char * get_tag()
+{
+	char tmp[2000];
+
+	printf("Please enter tags one by one, enter 'stop' when you finish: ");
+	scanf("%s", tmp);
+
+	int len = strlen(tmp);
+
+	if (len > 1000)
+	{
+		printf("Fail: maximum lenght for comment is 2000 char.\n");
+		exit(2);
+	}
+
+	//check si le tag ne contient pas de numéro ou de symbole, uniquement des lettres. Convertir les majuscules en minuscules également.
+	for (int i =0; i < len; i++)
+	{
+		if (!(isalpha(tmp[i])))
+		{
+			printf("Your tags must have only letters.\n");
+			break;
+		}
+
+		if (isupper(tmp[i]))
+		{
+			tmp[i] = tolower(tmp[i]);
+		}
+	}
+
+	char * var_tag = malloc(sizeof(len));
+
+	strcpy(var_tag, tmp);
+
+	return var_tag;
 }
