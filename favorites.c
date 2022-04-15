@@ -139,33 +139,39 @@ char* get_link()
 
 char * get_tag()
 {
-	char tmp[2000];
-
-	printf("Please enter tags one by one, enter 'stop' when you finish: ");
-	scanf("%s", tmp);
-
-	int len = strlen(tmp);
-
-	if (len > 1000)
-	{
-		printf("Fail: maximum lenght for comment is 2000 char.\n");
-		exit(2);
-	}
+	char tmp[51];
+	bool check_len = false;
+	bool check_alpha = false;
 
 	//check si le tag ne contient pas de numéro ou de symbole, uniquement des lettres. Convertir les majuscules en minuscules également.
-	for (int i =0; i < len; i++)
+	do
 	{
-		if (!(isalpha(tmp[i])))
-		{
-			printf("Your tags must have only letters.\n");
-			break;
-		}
+		check_alpha = true;
 
-		if (isupper(tmp[i]))
+		printf("Please enter tags one by one, enter 'stop' when you finish: ");
+		scanf("%s", tmp);
+
+		int len = strlen(tmp);
+
+		if (len <= 50)
+			check_len = true;
+		else
+			printf("Fail: the maximum lenght of a tag is 50 char.\n");
+
+		for (int i = 0; i < len; i++)
 		{
-			tmp[i] = tolower(tmp[i]);
+			if (!(isalpha(tmp[i])))
+				check_alpha = false;
+			
+			if (isupper(tmp[i]))
+				tmp[i] = tolower(tmp[i]);
 		}
+		if (check_alpha == false)
+			printf("Fail: Your tag must have only letters.\n");
 	}
+	while (check_alpha != true || check_len != true);
+	
+	int len = strlen(tmp);
 
 	char * var_tag = malloc(sizeof(len));
 
