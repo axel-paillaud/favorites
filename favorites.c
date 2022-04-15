@@ -21,13 +21,26 @@ int main(void)
 {
 	do
 	{
+		// Ici, ouvrir le fichier favorites.csv. S'il n'existe pas, le créer
+		// Penser à fclose le fichier à la fin
+		FILE *file = fopen("favorites.csv", "a");
+		if (file == NULL)
+			return 1;
+
+
+		// Obtenir l'input de l'user entre link, key, note
 		get_input();
 		int val_input = check_input();
 
 		if (val_input == 1)
 		{
+			//Ajouter l'input à un fichier csv
 			char *var_link = get_link();
-			printf("%s\n", var_link);
+
+			fprintf(file, "%s;\n", var_link);
+
+			fclose(file);
+
 			free(var_link);
 		}
 		else if (val_input == 2)
@@ -100,15 +113,15 @@ char* get_link()
 {
 	char tmp[2100];
 	printf("Please past or write your hyperlink: \n");
-	scanf("%2099s", tmp);
+	scanf("%s", tmp);
 
 	int len = strlen(tmp) + 1;
 
 	if (len > 2100)
 	{
 		printf("Fail: a link cannot be more than 2100 char.\n");
-		exit(0);
-		// à vérifier si 2100 char interrompt bien la fonction avant la fin
+		exit(1);
+		// Ok arrête bien la fonction, par contre quitte carrément le programme, voir si boucle do while mieux
 	}
 
 	char *var_link = malloc(sizeof(len));
