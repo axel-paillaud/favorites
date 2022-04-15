@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 //prototype
 char get_input();
@@ -27,6 +28,7 @@ int main(void)
 		{
 			char *var_link = get_link();
 			printf("%s\n", var_link);
+			free(var_link);
 		}
 		else if (val_input == 2)
 		{
@@ -96,16 +98,22 @@ int check_input()
 
 char* get_link()
 {
-	char *var_link;
+	char tmp[2100];
 	printf("Please past or write your hyperlink: \n");
-	scanf("%2099s", var_link);
+	scanf("%2099s", tmp);
 
-	int len = strlen(var_link) + 1;
+	int len = strlen(tmp) + 1;
 
 	if (len > 2100)
 	{
 		printf("Fail: a link cannot be more than 2100 char.\n");
+		exit(0);
+		// à vérifier si 2100 char interrompt bien la fonction avant la fin
 	}
+
+	char *var_link = malloc(sizeof(len));
+
+	strcpy(var_link, tmp);
 
 	return var_link;
 }
