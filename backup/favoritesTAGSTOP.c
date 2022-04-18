@@ -46,22 +46,12 @@ int main(void)
 			do
 			{
 				char * var_tag = get_tag();
+
+				fprintf(file, "<%s>,", var_tag);
+
 				cmp = strcmp(var_tag, mstop);
-
-				if (cmp != 0)
-					fprintf(file, "<%s>,", var_tag);
-
 			}
 			while (cmp != 0);
-			
-			fclose(file);
-
-			//Ici, il faut rembobiner de 1 caractère afin de remplacer la dernière virgule par un point-virgule
-			FILE *file = fopen("link.csv", "r+");
-
-			fseek(file, -1, SEEK_END);
-			fputc(';', file);
-			fprintf(file, "\n");
 
 			fclose(file);
 
