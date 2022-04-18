@@ -10,16 +10,15 @@ bool check_exit();
 int check_input();
 char* get_link();
 char * get_tag();
+bool check_stop();
 
 // global variable
 char input[15];
+char var_tag[51];
 char mlink[5] = "link";
 char mnote[5] = "note";
 char mkey[4] = "key";
 char mexit[5] = "exit";
-char mstop[5] = "stop";
-
-int cmp = 1;
 
 int main(void)
 {
@@ -46,16 +45,12 @@ int main(void)
 			do
 			{
 				char * var_tag = get_tag();
-
-				cmp = strcmp(var_tag, mstop);
 			}
-			while (cmp != 0);
+			while (check_stop() != true);
 
 			fclose(file);
 
 			free(var_link);
-
-			exit(0);
 		}
 
 		else if (val_input == 2)
@@ -189,3 +184,16 @@ char * get_tag()
 	return var_tag;
 }
 
+bool check_stop()
+{
+	char mstop[5] = "stop";
+
+	int cmp = strcmp(var_tag, mstop);
+	printf("%i\n", cmp);
+	printf("%s\n", var_tag);
+
+	if (cmp == 0)
+		return true;
+	else
+		return false;
+}
