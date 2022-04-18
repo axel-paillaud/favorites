@@ -41,11 +41,13 @@ int main(void)
 			//Ajouter l'input à un fichier csv
 			char *var_link = get_link();
 
-			fprintf(file, "%s;\n", var_link);
+			fprintf(file, "%s,", var_link);
 
 			do
 			{
 				char * var_tag = get_tag();
+
+				fprintf(file, "<%s>,", var_tag);
 
 				cmp = strcmp(var_tag, mstop);
 			}
