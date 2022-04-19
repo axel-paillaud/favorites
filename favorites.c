@@ -10,6 +10,7 @@ bool check_exit();
 int check_input();
 char* get_link();
 char * get_tag();
+int add_comment(FILE *file);
 
 // global variable
 char input[15];
@@ -59,6 +60,8 @@ int main(void)
 			while (cmp != 0);
 			
 			fprintf(file, "|END|\n");
+
+			add_comment(file);
 			
 			fclose(file);
 
@@ -199,3 +202,36 @@ char * get_tag()
 	return var_tag;
 }
 
+int add_comment(FILE *file)
+{
+
+	char answer_comment[4];
+	char comment[3000];
+	char yes[4] = "yes";
+	char no[3] = "no";
+	char y[2] = "y";
+	char n[2] = "n";
+
+	printf("Do you want to add a comment ? (y/n)\n");
+	scanf("%4s", answer_comment);
+
+	int cmpYes = strcmp(answer_comment, yes);
+	int cmpY = strcmp(answer_comment, y);
+	int cmpNo = strcmp(answer_comment, no);
+	int cmpN = strcmp(answer_comment, n);
+
+	if (cmpYes == 0||cmpY == 0)
+	{
+		printf("Please enter your comment: \n");
+		scanf("%2998s", comment);
+
+		fprintf(file, "'%s'", comment);
+		fprintf(file, "|END|\n");
+	}
+	else if (cmpNo == 0||cmpN == 0)
+	{
+	       printf("Vous venez de choisir non\n");
+	}
+	else
+		printf("Choix invalide\n");	
+}
