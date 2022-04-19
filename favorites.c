@@ -41,7 +41,9 @@ int main(void)
 			//Ajouter l'input à un fichier csv
 			char *var_link = get_link();
 
-			fprintf(file, "%s,", var_link);
+			fprintf(file, "'%s',", var_link);
+		
+			printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
 			do
 			{
@@ -169,7 +171,6 @@ char * get_tag()
 	{
 		check_alpha = true;
 
-		printf("Please enter tags one by one, enter 'stop' when you finish: ");
 		scanf("%s", tmp);
 
 		int len = strlen(tmp);
