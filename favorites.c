@@ -27,7 +27,7 @@ int main(void)
 	{
 		// Ici, ouvrir le fichier favorites.csv. S'il n'existe pas, le créer
 		// Penser à fclose le fichier à la fin
-		FILE *file = fopen("link.csv", "a");
+		FILE *file = fopen(".link", "a");
 		if (file == NULL)
 			return 1;
 
@@ -41,7 +41,7 @@ int main(void)
 			//Ajouter l'input à un fichier csv
 			char *var_link = get_link();
 
-			fprintf(file, "'%s',", var_link);
+			fprintf(file, "%s|END|", var_link);
 		
 			printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
@@ -51,20 +51,15 @@ int main(void)
 				cmp = strcmp(var_tag, mstop);
 
 				if (cmp != 0)
-					fprintf(file, "<%s>,", var_tag);
+					fprintf(file, "<%s>", var_tag);
+
+				free(var_tag);
 
 			}
 			while (cmp != 0);
 			
-			fclose(file);
-
-			//Ici, il faut rembobiner de 1 caractère afin de remplacer la dernière virgule par un point-virgule
-			FILE *file = fopen("link.csv", "r+");
-
-			fseek(file, -1, SEEK_END);
-			fputc(';', file);
-			fprintf(file, "\n");
-
+			fprintf(file, "|END|\n");
+			
 			fclose(file);
 
 			free(var_link);
@@ -146,6 +141,8 @@ char* get_link()
 
 	int len = strlen(tmp) + 1;
 
+	int test = sizeof(char);
+
 	if (len > 2100)
 	{
 		printf("Fail: a link cannot be more than 2100 char.\n");
@@ -153,7 +150,7 @@ char* get_link()
 		// Ok arrête bien la fonction, par contre quitte carrément le programme, voir si boucle do while mieux
 	}
 
-	char *var_link = malloc(sizeof(len));
+	char *var_link = malloc(sizeof(char) * len);
 
 	strcpy(var_link, tmp);
 
