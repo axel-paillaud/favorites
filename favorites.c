@@ -211,6 +211,7 @@ int add_comment(FILE *file)
 	char no[3] = "no";
 	char y[2] = "y";
 	char n[2] = "n";
+	char tmp;
 
 	printf("Do you want to add a comment ? (y/n)\n");
 	scanf("%4s", answer_comment);
@@ -222,8 +223,8 @@ int add_comment(FILE *file)
 
 	if (cmpYes == 0||cmpY == 0)
 	{
-		printf("Please enter your comment: \n");
-		scanf("%2998s", comment);
+		printf("Please enter your comment:\n");
+		fgets(comment, 3000, stdin);
 
 		fprintf(file, "'%s'", comment);
 		fprintf(file, "|END|\n");
