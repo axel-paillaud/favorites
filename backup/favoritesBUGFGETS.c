@@ -59,7 +59,7 @@ int main(void)
 			}
 			while (cmp != 0);
 			
-			fprintf(file, "|END|");
+			fprintf(file, "|END|\n");
 
 			add_comment(file);
 			
@@ -204,8 +204,9 @@ char * get_tag()
 
 int add_comment(FILE *file)
 {
-	char comment[3000];
+
 	char answer_comment[4];
+	char comment[3000];
 	char yes[4] = "yes";
 	char no[3] = "no";
 	char y[2] = "y";
@@ -223,13 +224,7 @@ int add_comment(FILE *file)
 	if (cmpYes == 0||cmpY == 0)
 	{
 		printf("Please enter your comment:\n");
-
-		//Need an extra fgets() call to empty the input stream of last key called by scanf
 		fgets(comment, 3000, stdin);
-		fgets(comment, 3000, stdin);
-		//Ici, supprimer le dernier caractère de retour à la ligne de fgets
-		int len = strlen(comment);
-		comment[len - 1] = 0;
 
 		fprintf(file, "'%s'", comment);
 		fprintf(file, "|END|\n");
