@@ -14,6 +14,9 @@ int main(void)
 	}
 	else
 	{
+		char tmp[20];
+		printf("Entrez du texte avec scanf: \n");
+		scanf("%s", tmp);
 		myFunction(file);
 	}
 

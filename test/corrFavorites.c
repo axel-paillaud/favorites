@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <errno.h>
 
 //prototype
 char get_input();
@@ -59,7 +60,7 @@ int main(void)
 			}
 			while (cmp != 0);
 			
-			fprintf(file, "|END|\n");
+			fprintf(file, "|END|");
 
 			add_comment(file);
 			
@@ -106,9 +107,9 @@ bool check_exit()
 	}
 	int result = strcmp(arr, mexit);
 	if (result == 0 )
-	{
 		return true;
-	}
+	else
+		return false;
 }
 
 int check_input()
@@ -143,8 +144,6 @@ char* get_link()
 	scanf("%s", tmp);
 
 	int len = strlen(tmp) + 1;
-
-	int test = sizeof(char);
 
 	if (len > 2100)
 	{
@@ -205,31 +204,30 @@ char * get_tag()
 int add_comment(FILE *file)
 {
 	char comment[3000];
-	char answer_comment[4];
+	char answer_comment[4]; 
 	char yes[4] = "yes";
 	char no[3] = "no";
-	char y[2] = "y";
+	char y[2] ="y";
 	char n[2] = "n";
-	char tmp;
 
 	printf("Do you want to add a comment ? (y/n)\n");
-	scanf("%4s", answer_comment);
+	fgets(answer_comment, 4, stdin);
+
+	printf("%i\n", errno);
+	puts(strerror(errno));
 
 	int cmpYes = strcmp(answer_comment, yes);
 	int cmpY = strcmp(answer_comment, y);
 	int cmpNo = strcmp(answer_comment, no);
 	int cmpN = strcmp(answer_comment, n);
 
+	printf("%i\n", cmpYes);
+
 	if (cmpYes == 0||cmpY == 0)
 	{
 		printf("Please enter your comment:\n");
-
-		//Need an extra fgets() call to empty the input stream of last key called by scanf
 		fgets(comment, 3000, stdin);
-		fgets(comment, 3000, stdin);
-
-		fprintf(file, "'%s'", comment);
-		fprintf(file, "|END|\n");
+		fprintf(file, "%s|END|", comment);
 	}
 	else if (cmpNo == 0||cmpN == 0)
 	{
