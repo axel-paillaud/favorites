@@ -59,7 +59,7 @@ int main(void)
 			}
 			while (cmp != 0);
 			
-			fprintf(file, "|END|\n");
+			fprintf(file, "|END|");
 
 			add_comment(file);
 			
@@ -227,6 +227,9 @@ int add_comment(FILE *file)
 		//Need an extra fgets() call to empty the input stream of last key called by scanf
 		fgets(comment, 3000, stdin);
 		fgets(comment, 3000, stdin);
+		//Ici, supprimer le dernier caractère de retour à la ligne de fgets
+		int len = strlen(comment);
+		comment[len - 1] = 0;
 
 		fprintf(file, "'%s'", comment);
 		fprintf(file, "|END|\n");
