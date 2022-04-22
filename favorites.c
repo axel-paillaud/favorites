@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 //prototype
-char get_input();
+void get_input();
 bool check_exit();
 int check_input();
 char* get_link();
@@ -78,7 +78,7 @@ int main(void)
 		{
 			printf("key");	
 		}
-		else if (val_input == 4)
+		else if (val_input == -1)
 		{
 			printf("\n");
 			printf("Type of datas: link, note, key or enter 'exit' to quit the program.\n");	
@@ -89,7 +89,7 @@ int main(void)
 	// pensez à vider la mémoire avec free ici si malloc a été utilisé pour table de hash
 }
 
-char get_input()
+void get_input()
 {
 	printf("What is the type of data you want to store ?\n");
 	scanf("%14s", input);
@@ -109,6 +109,8 @@ bool check_exit()
 	{
 		return true;
 	}
+	else
+		return false;
 }
 
 int check_input()
@@ -131,9 +133,9 @@ int check_input()
 	else if (resultkey == 0)
 		return 3;
 	else if (resultexit != 0)
-		return 4;
+		return -1;
 	else
-		return 0;
+		return -2;
 }
 
 char* get_link()
@@ -143,8 +145,6 @@ char* get_link()
 	scanf("%s", tmp);
 
 	int len = strlen(tmp) + 1;
-
-	int test = sizeof(char);
 
 	if (len > 2100)
 	{
@@ -210,7 +210,6 @@ int add_comment(FILE *file)
 	char no[3] = "no";
 	char y[2] = "y";
 	char n[2] = "n";
-	char tmp;
 
 	printf("Do you want to add a comment ? (y/n)\n");
 	scanf("%4s", answer_comment);
@@ -233,11 +232,16 @@ int add_comment(FILE *file)
 
 		fprintf(file, "'%s'", comment);
 		fprintf(file, "|END|\n");
+		return 0;
 	}
 	else if (cmpNo == 0||cmpN == 0)
 	{
 	       printf("Vous venez de choisir non\n");
+	       return 1;
 	}
 	else
+	{
 		printf("Choix invalide\n");	
+		return 2;
+	}
 }
