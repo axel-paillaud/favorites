@@ -10,7 +10,6 @@ bool check_exit();
 int check_input();
 char* get_link();
 char * get_tag();
-int list_tag(FILE * file);
 int add_comment(FILE *file);
 
 // global variable
@@ -40,14 +39,27 @@ int main(void)
 
 		if (val_input == 1)
 		{
-			//Ajouter l'input à un fichier caché .link 
+			//Ajouter l'input à un fichier csv
 			char *var_link = get_link();
 
 			fprintf(file, "%s|END|", var_link);
 		
 			printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
-			list_tag(file);
+			do
+			{
+				char * var_tag = get_tag();
+				cmp = strcmp(var_tag, mstop);
+
+				if (cmp != 0)
+					fprintf(file, "<%s>", var_tag);
+
+				free(var_tag);
+
+			}
+			while (cmp != 0);
+			
+			fprintf(file, "|END|");
 
 			add_comment(file);
 			
@@ -182,63 +194,13 @@ char * get_tag()
 	}
 	while (check_alpha != true || check_len != true);
 	
-	int len = (strlen(tmp) + 1);
+	int len = strlen(tmp);
 
 	char * var_tag = malloc(sizeof(len));
 
 	strcpy(var_tag, tmp);
 
 	return var_tag;
-}
-
-int list_tag(FILE * file)
-{
-	char mstop[5] = "stop";
-	int i = 0;
-	int cmp_stop = 1;
-
-	char * list_tag[30];
-
-	do
-	{
-		int cmp_same_word = 1;
-		char * var_tag = get_tag();
-		bool check_tag_exist = false;
-
-		cmp_stop = strcmp(var_tag, mstop);
-
-		list_tag[i] = var_tag;
-
-		if (i > 30)
-		{
-			printf("You can't have more than 30 tags.\n");
-			return 1;
-		}
-
-		// Check if the tag was already type by the user. If not, add the tag to the file.
-		for (int j = 0; j < i; j++)
-		{
-			cmp_same_word = strcmp(list_tag[i], list_tag[j]);
-			if (cmp_same_word == 0)
-			{
-				printf("You already enter this tag.\n");
-				check_tag_exist = true;
-			}
-		}
-
-		if (check_tag_exist != true && cmp_stop != 0)
-		{
-			fprintf(file, "<%s>", list_tag[i]);
-		}
-
-		i++;
-	}
-	while (cmp_stop != 0);
-
-	for (int j = 0; j < i; j++)
-		free(list_tag[j]);
-
-	fprintf(file, "|END|");
 }
 
 int add_comment(FILE *file)
