@@ -239,6 +239,7 @@ int list_tag(FILE * file)
 		free(list_tag[j]);
 
 	fprintf(file, "|END|");
+	return 0;
 }
 
 int add_comment(FILE *file)
