@@ -245,67 +245,40 @@ int list_tag(FILE * file)
 int add_comment(FILE *file)
 {
 	char comment[3000];
-	char answer_comment[20];
+	char answer_comment[4];
 	char yes[4] = "yes";
 	char no[3] = "no";
 	char y[2] = "y";
 	char n[2] = "n";
-	bool check_comment = false;
-	while ((getchar()) != '\n');
 
 	printf("Do you want to add a comment ? (y/n)\n");
-	do
+	scanf("%4s", answer_comment);
+
+	int cmpYes = strcmp(answer_comment, yes);
+	int cmpY = strcmp(answer_comment, y);
+	int cmpNo = strcmp(answer_comment, no);
+	int cmpN = strcmp(answer_comment, n);
+
+	if (cmpYes == 0||cmpY == 0)
 	{
-		fgets(answer_comment, 20, stdin);
+		printf("Please enter your comment:\n");
 
-		int answ_len = strlen(answer_comment);
-		answer_comment[answ_len - 1] = 0;
-		int cmpYes = strcmp(answer_comment, yes);
-		int cmpY = strcmp(answer_comment, y);
-		int cmpNo = strcmp(answer_comment, no);
-		int cmpN = strcmp(answer_comment, n);
-		int cmpExit = strcmp(answer_comment, mexit);
+		//Need an extra fgets() call to empty the input stream of last key called by scanf
+		fgets(comment, 3000, stdin);
+		fgets(comment, 3000, stdin);
+		//Ici, supprimer le dernier caractère de retour à la ligne de fgets
+		int len = strlen(comment);
+		comment[len - 1] = 0;
 
-		if (answ_len > 18)
-		{
-			printf("Too much character\n");
-			// clear input stream
-			while ((getchar()) != '\n');
-
-			check_comment = false;
-		}
-		else if (cmpYes == 0||cmpY == 0)
-		{
-			printf("Please enter your comment:\n");
-	
-			while ((getchar()) != '\n');
-			fgets(comment, 3000, stdin);
-			//Ici, supprimer le dernier caractère de retour à la ligne de fgets
-			int len = strlen(comment);
-			comment[len - 1] = 0;
-	
-			fprintf(file, "'%s'", comment);
-			fprintf(file, "|END|\n");
-			check_comment = true;
-			return 0;
-		}
-		else if (cmpNo == 0||cmpN == 0)
-		{
-			check_comment = true;
-		       return 0;
-		}
-		else if (cmpExit == 0)
-		{
-			check_comment = true;
-			return 0;
-		}
-		else
-		{
-			printf("Invalid choice\n");	
-			check_comment = false;
-		}
+		fprintf(file, "'%s'", comment);
+		fprintf(file, "|END|\n");
+		return 0;
 	}
-	while (check_comment != true);
-	return 1;
+	else if (cmpNo == 0||cmpN == 0)
+	       return 1;
+	else
+	{
+		printf("Choix invalide\n");	
+		return 2;
+	}
 }
-
