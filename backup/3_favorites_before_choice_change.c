@@ -5,84 +5,147 @@
 #include <ctype.h>
 
 //prototype
-bool check_exit(char * var_fav);
-char * get_fav();
+void get_input();
+bool check_exit();
+int check_input();
+char* get_link();
 char * get_tag();
 int list_tag(FILE * file);
 int add_comment(FILE *file);
 
 // global variable
+char input[15];
+char mlink[5] = "link";
+char mnote[5] = "note";
+char mkey[4] = "key";
 char mexit[5] = "exit";
 char mstop[5] = "stop";
-char var_fav[3000];
 
 int cmp = 1;
 
 int main(void)
 {
-	FILE *file = fopen(".favorites.db", "a");
-	if (file == NULL)
+	do
 	{
-		printf("Impossible to open the favorites file.\n");
-		return 1;
-	}
+		// Ici, ouvrir le fichier favorites.csv. S'il n'existe pas, le créer
+		// Penser à fclose le fichier à la fin
+		FILE *file = fopen(".link", "a");
+		if (file == NULL)
+			return 1;
 
 
-	char *var_fav = get_fav();
+		// Obtenir l'input de l'user entre link, key, note
+		get_input();
+		int val_input = check_input();
 
-	fprintf(file, "%s|END|", var_fav);
-	
-	printf("Please enter tags one by one, enter 'stop' when you finish: \n");
+		if (val_input == 1)
+		{
+			//Ajouter l'input à un fichier caché .link 
+			char *var_link = get_link();
 
-	list_tag(file);
+			fprintf(file, "%s|END|", var_link);
+		
+			printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
-	add_comment(file);
+			list_tag(file);
+
+			add_comment(file);
 			
-	fclose(file);
+			fclose(file);
 
-	free(var_fav);
+			free(var_link);
 
-	exit(0);
-	
+			exit(0);
+		}
+
+		else if (val_input == 2)
+		{
+			printf("note");	
+		}
+		else if (val_input == 3)
+		{
+			printf("key");	
+		}
+		else if (val_input == -1)
+		{
+			printf("\n");
+			printf("Type of datas: link, note, key or enter 'exit' to quit the program.\n");	
+			printf("\n");
+		}
+	}
+	while (check_exit() != true);
 	// pensez à vider la mémoire avec free ici si malloc a été utilisé pour table de hash
 }
 
-bool check_exit(char *var_fav)
+void get_input()
 {
-	int value_cmp_exit = strcmp(mexit, var_fav);
-
-	if (value_cmp_exit == 0)
-	       return true;
-	else
-		return false;	
+	printf("What is the type of data you want to store ?\n");
+	scanf("%14s", input);
 }
 
-
-char* get_fav()
+bool check_exit()
 {
-	char tmp[10000];
-	printf("Please past or write your note: \n");
-	fgets(tmp, 10000, stdin);
+	char *n = input;
+	int j = strlen(n) + 1;
+	char arr[j];
+	for (int i = 0; i <= j; i++)
+	{
+		arr[i] = n[i];
+	}
+	int result = strcmp(arr, mexit);
+	if (result == 0 )
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+int check_input()
+{
+	char *n = input;
+	int j = strlen(n) + 1;
+	char arr[j];
+	
+	strcpy(arr, n);
+
+	int resultlink = strcmp(arr, mlink);
+	int resultnote = strcmp(arr, mnote);
+	int resultkey = strcmp(arr, mkey);
+	int resultexit = strcmp(arr, mexit);
+
+	if (resultlink == 0)
+		return 1;
+	else if (resultnote == 0)
+		return 2;
+	else if (resultkey == 0)
+		return 3;
+	else if (resultexit != 0)
+		return -1;
+	else
+		return -2;
+}
+
+char* get_link()
+{
+	char tmp[2100];
+	printf("Please past or write your hyperlink: \n");
+	scanf("%s", tmp);
 
 	int len = strlen(tmp) + 1;
 
-	if (len > 9999)
+	if (len > 2100)
 	{
-		printf("Fail: Your note cannot be longer than 10 000 char.\n");
+		printf("Fail: a link cannot be more than 2100 char.\n");
 		exit(1);
+		// Ok arrête bien la fonction, par contre quitte carrément le programme, voir si boucle do while mieux
 	}
 
-	char *var_fav = malloc(sizeof(char) * len);
+	char *var_link = malloc(sizeof(char) * len);
 
-	strcpy(var_fav, tmp);
+	strcpy(var_link, tmp);
 
-	if (check_exit(var_fav) == true)
-	{
-		free(var_fav);
-		exit(0);
-	}
-
-	return var_fav;
+	return var_link;
 }
 
 char * get_tag()
