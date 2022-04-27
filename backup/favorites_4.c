@@ -149,9 +149,6 @@ int list_tag(FILE * file)
 
 		cmp_stop = strcmp(var_tag, mstop);
 
-		if (cmp_stop == 0 && check_tag == false)
-			printf("You have to put at least one tag, because it is the only way to find your note.\n");
-
 		list_tag[i] = var_tag;
 
 		if (i > 30)
@@ -164,7 +161,7 @@ int list_tag(FILE * file)
 		for (int j = 0; j < i; j++)
 		{
 			cmp_same_word = strcmp(list_tag[i], list_tag[j]);
-			if (cmp_same_word == 0 && cmp_stop != 0 && check_tag_exist != true)
+			if (cmp_same_word == 0)
 			{
 				printf("You already enter this tag.\n");
 				check_tag_exist = true;
@@ -179,7 +176,7 @@ int list_tag(FILE * file)
 
 		i++;
 	}
-	while (cmp_stop != 0 || check_tag == false);
+	while (cmp_stop != 0);
 
 	for (int j = 0; j < i; j++)
 		free(list_tag[j]);
