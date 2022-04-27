@@ -190,7 +190,7 @@ int list_tag(FILE * file)
 		return 0;
 	}
 	else
-		return 0;
+		return 1;
 }
 
 int add_comment(FILE *file)
