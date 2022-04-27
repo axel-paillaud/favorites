@@ -1,0 +1,17 @@
+laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|END|<untag><la><sa>|END|'voici un commentaire'|END|
+lien|END|<la><sa>|END|'lalalal un commentaire'|END|
+Ma note
+|END|<tag><taga><tagada><tagadada>|END|'Voiçi mon commentaire'|END|
+Ma note
+|END|<un><tag><qui><lol>|END|'Voiçi mon joli commentaire.'|END|
+Voiçi ma note
+|END|<un><tag><joli>|END|'Voiçi mon commentaire'|END|
+Voiçi ma note|END|<voila><un><tag>|END|'voila mon commentaire'|END|
+Ma note|END||END|'moncommentaire'|END|
+Voila ma note|END|'et voila mon commentaire, je n'ai pas mis de tag'|END|
+Voila ma note, je vais tenter de ne pas mettre de tag (interdit)|END|'voila mon commentaire'|END|
+Ma note sans tag ?|END|<un><tag>|END|'Voila mon commentaire, je n'ai pas réussi à ne pas rentrer de tag.'|END|
+Ma note, je vais essayer de rentrer plusieurs fois stop|END|<un><tag>|END|'Voila mon commentaire, si plusieurs stop, ne m'a pas indiqué que j'ai déjà rentré ce tag'|END|
+ma note|END|<un>|END|
+Ma note|END|<un><tag>|END|'Est ce qu'on est bien revenu à la ligne avant cet input ?'|END|
+ma note|END|<un>|END|'lol'|END|
