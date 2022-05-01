@@ -36,8 +36,6 @@ int main(void)
 	char *var_fav = get_fav();
 
 	fprintf(file, "%s|END|", var_fav);
-
-	free(var_fav);
 	
 	printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
@@ -46,6 +44,8 @@ int main(void)
 	add_comment(file);
 			
 	fclose(file);
+
+	free(var_fav);
 
 	exit(0);
 }
@@ -183,36 +183,41 @@ char * get_string(void)
 
 char* get_fav()
 {
-	char * fav;
+	char tmp[10000];
 	printf("Please past or write your note: \n");
+	fgets(tmp, 10000, stdin);
 
-	fav = get_string();
+	int len = strlen(tmp) + 1;
 
-	int len = strlen(fav);
-
-	if (len == 0)
+	if (len > 9999)
 	{
-		printf("Your note is empty. Action cancelled.\n");
-		free(fav);
-		exit(2);
+		printf("Fail: Your note cannot be longer than 10 000 char.\n");
+		exit(1);
 	}
 
-	if (check_exit(fav) == true)
+	tmp[len - 2] = 0;
+
+	char *var_fav = malloc(sizeof(char) * len);
+
+	strcpy(var_fav, tmp);
+
+	if (check_exit(var_fav) == true)
 	{
-		free(fav);
+		free(var_fav);
 		exit(0);
 	}
 
-	return fav;
+	return var_fav;
 }
 
 char * get_tag()
 {
 	bool check_len = false;
-	//check if the user put special char. If it is the case, return error.
 	bool check_alpha = false;
 	char * tag;
 
+	//check si le tag ne contient pas de numéro ou de symbole, uniquement des lettres. Convertir les majuscules en minuscules également.
+	//TODO Il faudra soit check avec scanf si l'utilisateur à taper des espaces, soit check en utilisant fgets
 	do
 	{
 		check_alpha = true;
@@ -316,8 +321,8 @@ int list_tag(FILE * file)
 
 int add_comment(FILE *file)
 {
-	char * comment;
-	char * answer_comment;
+	char comment[3000];
+	char answer_comment[20];
 	char yes[4] = "yes";
 	char no[3] = "no";
 	char y[2] = "y";
@@ -327,52 +332,36 @@ int add_comment(FILE *file)
 	printf("Do you want to add a comment ? (y/n)\n");
 	do
 	{
-		bool check_alpha = true;
-
-		answer_comment = get_string();
+		fgets(answer_comment, 20, stdin);
 
 		int answ_len = strlen(answer_comment);
-
-		for (int i = 0; i < answ_len; i++)
-		{
-			if (!(isalpha(answer_comment[i])))
-				check_alpha = false;
-
-			if (isupper(answer_comment[i]))
-				answer_comment[i] = tolower(answer_comment[i]);
-
-		}	
-
+		answer_comment[answ_len - 1] = 0;
 		int cmpYes = strcmp(answer_comment, yes);
 		int cmpY = strcmp(answer_comment, y);
 		int cmpNo = strcmp(answer_comment, no);
 		int cmpN = strcmp(answer_comment, n);
 		int cmpExit = strcmp(answer_comment, mexit);
 
-		if (check_alpha == false)
+		if (answ_len > 18)
 		{
-			printf("Fail: your answer contains special characters.\n");
-			free(answer_comment);
-			check_comment = false;	
-		}
+			printf("Too much character\n");
+			// clear input stream
+			while ((getchar()) != '\n');
 
-		else if (answ_len > 5)
-		{
-			printf("Too much character.\n");
-			free(answer_comment);
 			check_comment = false;
 		}
-
 		else if (cmpYes == 0||cmpY == 0)
 		{
 			printf("Please enter your comment:\n");
 	
-			comment = get_string();
-
+			fgets(comment, 3000, stdin);
+			//Ici, supprimer le dernier caractère de retour à la ligne de fgets
+			int len = strlen(comment);
+			comment[len - 1] = 0;
+	
 			fprintf(file, "'%s'", comment);
 			fprintf(file, "|END|\n");
 			check_comment = true;
-			free(comment);
 			return 0;
 		}
 		else if (cmpNo == 0||cmpN == 0)
