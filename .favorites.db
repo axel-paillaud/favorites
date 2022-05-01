@@ -15,3 +15,6 @@ Ma note, je vais essayer de rentrer plusieurs fois stop|END|<un><tag>|END|'Voila
 ma note|END|<un>|END|
 Ma note|END|<un><tag>|END|'Est ce qu'on est bien revenu à la ligne avant cet input ?'|END|
 ma note|END|<un>|END|'lol'|END|
+Voila ma note, suivi d'un lien: https://youtube.com/|END|<voila><un><tag>|END|'Voila mon joli commentaire'|END|
+ma note|END|<yes><lol>|END|'ununununununununun'|END|
+Voila ma note|END|<voila><un><joli><tag>|END|'Voila mon commentaire'|END|
