@@ -212,9 +212,9 @@ char* get_fav()
 
 char * get_tag()
 {
+	char tmp[51];
 	bool check_len = false;
 	bool check_alpha = false;
-	char * tag;
 
 	//check si le tag ne contient pas de numéro ou de symbole, uniquement des lettres. Convertir les majuscules en minuscules également.
 	//TODO Il faudra soit check avec scanf si l'utilisateur à taper des espaces, soit check en utilisant fgets
@@ -222,38 +222,35 @@ char * get_tag()
 	{
 		check_alpha = true;
 
-		tag = get_string();
+		scanf("%s", tmp);
 
-		int len = strlen(tag);
+		int len = strlen(tmp);
 
-		if (len >= 50)
-		{
-			printf("Fail: the maximum lenght of a tag is 50 char.\n");
-			free(tag);
-		}
-		else
-		{
+		if (len <= 50)
 			check_len = true;
+		else
+			printf("Fail: the maximum lenght of a tag is 50 char.\n");
 
-			for (int i = 0; i < len; i++)
-			{
-				if (!(isalpha(tag[i])))
-					check_alpha = false;
+		for (int i = 0; i < len; i++)
+		{
+			if (!(isalpha(tmp[i])))
+				check_alpha = false;
 			
-				if (isupper(tag[i]))
-					tag[i] = tolower(tag[i]);
-			}
-			
-			if (check_alpha == false)
-			{
-				printf("Fail: Your tag must have only letters.\n");
-				free(tag);
-			}
+			if (isupper(tmp[i]))
+				tmp[i] = tolower(tmp[i]);
 		}
+		if (check_alpha == false)
+			printf("Fail: Your tag must have only letters.\n");
 	}
 	while (check_alpha != true || check_len != true);
 	
-	return tag;
+	int len = (strlen(tmp) + 1);
+
+	char * var_tag = malloc(sizeof(len));
+
+	strcpy(var_tag, tmp);
+
+	return var_tag;
 }
 
 int list_tag(FILE * file)
@@ -328,6 +325,7 @@ int add_comment(FILE *file)
 	char y[2] = "y";
 	char n[2] = "n";
 	bool check_comment = false;
+	while ((getchar()) != '\n');
 
 	printf("Do you want to add a comment ? (y/n)\n");
 	do
