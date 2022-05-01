@@ -4,11 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define INITIAL_STRING_LENGTH (2)
-
 //prototype
-char * get_string(void);
-bool search_or_add();
 bool check_exit(char * var_fav);
 char * get_fav();
 char * get_tag();
@@ -31,7 +27,6 @@ int main(void)
 		return 1;
 	}
 
-	search_or_add();
 
 	char *var_fav = get_fav();
 
@@ -48,90 +43,8 @@ int main(void)
 	free(var_fav);
 
 	exit(0);
-}
-
-bool search_or_add()
-{
-	//true = search. change bool for int if need more than 2 input.
-	bool check_correct_input = false;
-	char * user_input; 
-
-	char search[7] = "search";
-	char s[2] = "s";
-	char add[4] = "add";
-	char a[2] = "a";
-
-	printf("Do you want to add note, or search for an existing note ?\n");
-
-	do
-	{
-		bool check_alpha = true;
-
-		user_input = get_string();
-
-		int input_len = strlen(user_input);
-
-		if (input_len >= 10)
-		{
-			printf("Too much character. Write 'search' or 's', 'add' or 'a'.\n");
-			free(user_input);
-		}
-		else
-		{
-			for (int i = 0; i < input_len; i++)
-			{
-				if (!(isalpha(user_input[i])))
-					check_alpha = false;
-
-				if (isupper(user_input[i]))
-					user_input[i] = tolower(user_input[i]);
-			}
-			if (check_alpha == false)
-			{
-				printf("Only normal letters are allowed. Write 'search' or 's', 'add', or 'a'");
-				free(user_input);
-			}
-			else
-			{
-				int cmpSearch = strcmp(user_input, search);
-				int cmpS = strcmp(user_input, s);
-				int cmpAdd = strcmp(user_input, add);
-				int cmpA = strcmp(user_input, a);
-
-				if (cmpSearch == 0)
-				{
-					check_correct_input = true;
-					free(user_input);	
-					return true;
-				}
-				else if (cmpS == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return true;
-				}
-				else if (cmpAdd == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return false;
-				}
-				else if (cmpA == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return false;
-				}
-				else
-				{
-					printf("Invalid input. Write 'search' or 's', 'add' or 'a'.\n");
-					free(user_input);
-				}
-			}
-		}
-	}
-	while (check_correct_input == false);
-	return false;
+	
+	// pensez à vider la mémoire avec free ici si malloc a été utilisé pour table de hash
 }
 
 bool check_exit(char *var_fav)
@@ -144,42 +57,6 @@ bool check_exit(char *var_fav)
 		return false;	
 }
 
-char * get_string(void)
-{
-	// Thanks to the computer scientist James Aspnes for this piece of code, this really help me out
-	char * string;
-	int size;
-	int length;
-	int c;
-
-	size = INITIAL_STRING_LENGTH;
-	string = malloc(size);
-	
-	if (string == NULL)
-	{
-		printf("Impossible to create string, memory out");
-		exit(0);
-	}
-
-	length = 0;
-
-	while((c = getchar()) != EOF && c != '\n')
-	{
-		if (length  >= size-1)
-		{
-			//Need more space!
-			size *= 2;
-
-			string = realloc(string, size);
-		}
-
-		string[length++] = c;
-	}
-
-	string[length] = '\0';
-
-	return string;
-}
 
 char* get_fav()
 {

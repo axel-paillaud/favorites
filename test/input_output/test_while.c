@@ -4,10 +4,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define INITIAL_STRING_LENGTH (2)
-
 //prototype
-char * get_string(void);
+int clear(void);
 bool search_or_add();
 bool check_exit(char * var_fav);
 char * get_fav();
@@ -50,35 +48,37 @@ int main(void)
 	exit(0);
 }
 
+//function to clear buffer
+int clear (void)
+{
+	int ch;
+	while ((ch = getchar()) != '\n' && ch != EOF);
+	return ch;
+}
+
 bool search_or_add()
 {
-	//true = search. change bool for int if need more than 2 input.
 	bool check_correct_input = false;
-	char * user_input; 
-
-	char search[7] = "search";
-	char s[2] = "s";
-	char add[4] = "add";
-	char a[2] = "a";
+	char user_input[100];
+	int ch;
 
 	printf("Do you want to add note, or search for an existing note ?\n");
-
 	do
 	{
 		bool check_alpha = true;
 
-		user_input = get_string();
-
+		fgets(user_input, 100, stdin);
 		int input_len = strlen(user_input);
+
+		user_input[input_len - 1] = '\0';
 
 		if (input_len >= 10)
 		{
 			printf("Too much character. Write 'search' or 's', 'add' or 'a'.\n");
-			free(user_input);
 		}
 		else
 		{
-			for (int i = 0; i < input_len; i++)
+			for (int i = 0; i < input_len - 1; i++)
 			{
 				if (!(isalpha(user_input[i])))
 					check_alpha = false;
@@ -87,51 +87,12 @@ bool search_or_add()
 					user_input[i] = tolower(user_input[i]);
 			}
 			if (check_alpha == false)
-			{
-				printf("Only normal letters are allowed. Write 'search' or 's', 'add', or 'a'");
-				free(user_input);
-			}
+				printf("Vous avez tapé autre chose que des lettres\n");
 			else
-			{
-				int cmpSearch = strcmp(user_input, search);
-				int cmpS = strcmp(user_input, s);
-				int cmpAdd = strcmp(user_input, add);
-				int cmpA = strcmp(user_input, a);
-
-				if (cmpSearch == 0)
-				{
-					check_correct_input = true;
-					free(user_input);	
-					return true;
-				}
-				else if (cmpS == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return true;
-				}
-				else if (cmpAdd == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return false;
-				}
-				else if (cmpA == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return false;
-				}
-				else
-				{
-					printf("Invalid input. Write 'search' or 's', 'add' or 'a'.\n");
-					free(user_input);
-				}
-			}
+				printf("Vous avez bien tapé que des lettres\n");
 		}
 	}
 	while (check_correct_input == false);
-	return false;
 }
 
 bool check_exit(char *var_fav)
@@ -144,42 +105,6 @@ bool check_exit(char *var_fav)
 		return false;	
 }
 
-char * get_string(void)
-{
-	// Thanks to the computer scientist James Aspnes for this piece of code, this really help me out
-	char * string;
-	int size;
-	int length;
-	int c;
-
-	size = INITIAL_STRING_LENGTH;
-	string = malloc(size);
-	
-	if (string == NULL)
-	{
-		printf("Impossible to create string, memory out");
-		exit(0);
-	}
-
-	length = 0;
-
-	while((c = getchar()) != EOF && c != '\n')
-	{
-		if (length  >= size-1)
-		{
-			//Need more space!
-			size *= 2;
-
-			string = realloc(string, size);
-		}
-
-		string[length++] = c;
-	}
-
-	string[length] = '\0';
-
-	return string;
-}
 
 char* get_fav()
 {
