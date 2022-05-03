@@ -1,35 +1,3 @@
-laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|END|<untag><la><sa>|END|'voici un commentaire'|END|
-lien|END|<la><sa>|END|'lalalal un commentaire'|END|
-Ma note
-|END|<tag><taga><tagada><tagadada>|END|'Voiçi mon commentaire'|END|
-Ma note
-|END|<un><tag><qui><lol>|END|'Voiçi mon joli commentaire.'|END|
-Voiçi ma note
-|END|<un><tag><joli>|END|'Voiçi mon commentaire'|END|
-Voiçi ma note|END|<voila><un><tag>|END|'voila mon commentaire'|END|
-Ma note|END||END|'moncommentaire'|END|
-Voila ma note|END|'et voila mon commentaire, je n'ai pas mis de tag'|END|
-Voila ma note, je vais tenter de ne pas mettre de tag (interdit)|END|'voila mon commentaire'|END|
-Ma note sans tag ?|END|<un><tag>|END|'Voila mon commentaire, je n'ai pas réussi à ne pas rentrer de tag.'|END|
-Ma note, je vais essayer de rentrer plusieurs fois stop|END|<un><tag>|END|'Voila mon commentaire, si plusieurs stop, ne m'a pas indiqué que j'ai déjà rentré ce tag'|END|
-ma note|END|<un>|END|
-Ma note|END|<un><tag>|END|'Est ce qu'on est bien revenu à la ligne avant cet input ?'|END|
-ma note|END|<un>|END|'lol'|END|
-Voila ma note, suivi d'un lien: https://youtube.com/|END|<voila><un><tag>|END|'Voila mon joli commentaire'|END|
-ma note|END|<yes><lol>|END|'ununununununununun'|END|
-Voila ma note|END|<voila><un><joli><tag>|END|'Voila mon commentaire'|END|
-Voila ma note|END|<un><tag><pla><la><sata>|END|'voila mon commentaire'|END|
-Voila ma note|END|<voilou>|END|
-VOila ma note|END|<un>|END|
-Voila ma note|END|<un>|END|'Voiçi un magnifique commentaire. Il contient des espaces, des accents, ééééeeeéeée. Et il est supuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuper long.'|END|
-ma note|END|<tag>|END|
-voila ma note|END|<voila><note>|END|'voila mon commentaire'|END|
-qlmjkdfmqlsdkqslkdqslmdkqslmdkqslmdkqslmdkkkkkkkkkkkkkkkkkkkkqmldkqslmdkqslmdkqlmskdqslmkdqslmdkqslmdkqslmdkqsmdkqsmldkqslmdkqslmdkqslmdkqslmdkqslkdqsmldkqslmdkqslmdkqslmdkqslmdkqslmdkqslmdkqsmldkqsmldkqsmldkqsmldkqsmldkqslmdkqsm|END|<qsdjqskldj><qkdjl><qkldjqkls><qsd>|END|Coucou Leila, comment tu vas ?|END|<><note><leila><coucou>|END|'Une note adressée à Leila'|END|
-Ma note, entrée sans tag|END|<>|END|
-Ma note, entrée sans tag et sans commentaire|END|<>|END|''|END|
-Ma note|END|<lala><sa>|END|''|END|
-Ma note, essai sur un commentaire vide|END|<un><tag><pas><vide>|END|'Mon commentaire, vide ne semble pas marcher.'|END|
-ma note|END|<tag>|END|ma note|END|<mon><tag>|END|ma note|END|<tag>|END|Voila ma note|END|<mon><tag><est><la>|END|'un petit commentaire pour la route'|END|
-Ma note|END|<un><tag>|END|
-ma note|END|<mon><tag>|END|
-Et voila ma note|END|<tag><lol>|END|
+Je test ma note|END|<un><tag>|END|'Et voila un com.'|END|
+je test une deuxième note, sans com|END|<tag><test>|END|
+Je test une troisième fois|END|<tag><lol>|END|'et un com'|END|
