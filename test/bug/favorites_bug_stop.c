@@ -260,8 +260,8 @@ int list_tag(FILE * file)
 	int i = 0;
 
 	//have to declare this variable here because of the do while loop.
-	int cmp_stop = 1;
-	int cmp_s = 1;
+	int cmp_stop = 0;
+	int cmp_s = 0;
 
 	//Check if the user put at least one tag. If not, prompt again.
 	bool check_tag = false;
@@ -285,9 +285,6 @@ int list_tag(FILE * file)
 		if (i > 30)
 		{
 			printf("You can't have more than 30 tags.\n");
-			for (int j = 0; j < i; j++)
-				free(list_tag[j]);
-
 			return 1;
 		}
 
@@ -295,7 +292,7 @@ int list_tag(FILE * file)
 		for (int j = 0; j < i; j++)
 		{
 			cmp_same_word = strcmp(list_tag[i], list_tag[j]);
-			if (cmp_same_word == 0 && (cmp_stop != 0 && cmp_s != 0) && check_tag_exist != true)
+			if (cmp_same_word == 0 && (cmp_stop != 0 || cmp_s != 0) && check_tag_exist != true)
 			{
 				printf("You already enter this tag.\n");
 				check_tag_exist = true;
@@ -310,7 +307,7 @@ int list_tag(FILE * file)
 
 		i++;
 	}
-	while ((cmp_stop != 0 && cmp_s != 0) || check_tag == false);
+	while ((cmp_stop != 0) || (cmp_s != 0));
 
 	for (int j = 0; j < i; j++)
 		free(list_tag[j]);
@@ -417,8 +414,7 @@ int add_comment(FILE *file)
 		else if (cmpNo == 0||cmpN == 0)
 		{
 			check_comment = true;
-			fprintf(file, "\n");
-		       	return 0;
+		       return 0;
 		}
 		else if (cmpExit == 0)
 		{
