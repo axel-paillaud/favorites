@@ -22,30 +22,38 @@ char s[2] = "s";
 
 int main(void)
 {
-	FILE *file = fopen(".favorites.db", "a");
-	if (file == NULL)
+	bool check_search_or_add = search_or_add();
+
+	if (check_search_or_add == true)
 	{
-		printf("Impossible to open the favorites file.\n");
-		return 1;
+		printf("SEARCH TODO\n");
 	}
 
-	search_or_add();
+	else
+	{
+		FILE *file = fopen(".favorites.db", "a");
+		if (file == NULL)
+		{
+			printf("Impossible to open the favorites file.\n");
+			return 1;
+		}
 
-	char *var_fav = get_fav();
+		char *var_fav = get_fav();
 
-	fprintf(file, "%s|END|", var_fav);
+		fprintf(file, "%s|END|", var_fav);
 
-	free(var_fav);
+		free(var_fav);
 	
-	printf("Please enter tags one by one, enter 'stop' when you finish: \n");
+		printf("Please enter tags one by one, enter 'stop' when you finish: \n");
 
-	list_tag(file);
+		list_tag(file);
 
-	add_comment(file);
+		add_comment(file);
 			
-	fclose(file);
+		fclose(file);
 
-	exit(0);
+		exit(0);
+	}
 }
 
 bool search_or_add()
@@ -96,25 +104,13 @@ bool search_or_add()
 				int cmpAdd = strcmp(user_input, add);
 				int cmpA = strcmp(user_input, a);
 
-				if (cmpSearch == 0)
+				if (cmpSearch == 0||cmpS == 0)
 				{
 					check_correct_input = true;
 					free(user_input);	
 					return true;
 				}
-				else if (cmpS == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return true;
-				}
-				else if (cmpAdd == 0)
-				{
-					check_correct_input = true;
-					free(user_input);
-					return false;
-				}
-				else if (cmpA == 0)
+				else if (cmpAdd == 0||cmpA == 0)
 				{
 					check_correct_input = true;
 					free(user_input);
@@ -376,6 +372,7 @@ int add_comment(FILE *file)
 
 		else if (cmpYes == 0||cmpY == 0)
 		{
+			free(answer_comment);
 			//check if the comment is empty.
 			bool check_correct_comment = false;
 
