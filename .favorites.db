@@ -18,3 +18,18 @@ ma note|END|<un>|END|'lol'|END|
 Voila ma note, suivi d'un lien: https://youtube.com/|END|<voila><un><tag>|END|'Voila mon joli commentaire'|END|
 ma note|END|<yes><lol>|END|'ununununununununun'|END|
 Voila ma note|END|<voila><un><joli><tag>|END|'Voila mon commentaire'|END|
+Voila ma note|END|<un><tag><pla><la><sata>|END|'voila mon commentaire'|END|
+Voila ma note|END|<voilou>|END|
+VOila ma note|END|<un>|END|
+Voila ma note|END|<un>|END|'Voiçi un magnifique commentaire. Il contient des espaces, des accents, ééééeeeéeée. Et il est supuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuper long.'|END|
+ma note|END|<tag>|END|
+voila ma note|END|<voila><note>|END|'voila mon commentaire'|END|
+qlmjkdfmqlsdkqslkdqslmdkqslmdkqslmdkqslmdkkkkkkkkkkkkkkkkkkkkqmldkqslmdkqslmdkqlmskdqslmkdqslmdkqslmdkqslmdkqsmdkqsmldkqslmdkqslmdkqslmdkqslmdkqslkdqsmldkqslmdkqslmdkqslmdkqslmdkqslmdkqslmdkqsmldkqsmldkqsmldkqsmldkqsmldkqslmdkqsm|END|<qsdjqskldj><qkdjl><qkldjqkls><qsd>|END|Coucou Leila, comment tu vas ?|END|<><note><leila><coucou>|END|'Une note adressée à Leila'|END|
+Ma note, entrée sans tag|END|<>|END|
+Ma note, entrée sans tag et sans commentaire|END|<>|END|''|END|
+Ma note|END|<lala><sa>|END|''|END|
+Ma note, essai sur un commentaire vide|END|<un><tag><pas><vide>|END|'Mon commentaire, vide ne semble pas marcher.'|END|
+ma note|END|<tag>|END|ma note|END|<mon><tag>|END|ma note|END|<tag>|END|Voila ma note|END|<mon><tag><est><la>|END|'un petit commentaire pour la route'|END|
+Ma note|END|<un><tag>|END|
+ma note|END|<mon><tag>|END|
+Et voila ma note|END|<tag><lol>|END|
