@@ -22,7 +22,7 @@ char s[2] = "s";
 
 int main(void)
 {
-	FILE *file = fopen(".favorites.csv", "a");
+	FILE *file = fopen(".favorites.db", "a");
 	if (file == NULL)
 	{
 		printf("Impossible to open the favorites file.\n");
@@ -33,7 +33,7 @@ int main(void)
 
 	char *var_fav = get_fav();
 
-	fprintf(file, "%s;", var_fav);
+	fprintf(file, "%s|END|", var_fav);
 
 	free(var_fav);
 	
@@ -304,7 +304,7 @@ int list_tag(FILE * file)
 
 		if (check_tag_exist != true && cmp_stop != 0 && cmp_s != 0)
 		{
-			fprintf(file, "<%s>,", list_tag[i]);
+			fprintf(file, "<%s>", list_tag[i]);
 			check_tag = true;
 		}
 
@@ -317,13 +317,7 @@ int list_tag(FILE * file)
 
 	if (check_tag == true)
 	{
-		//delete the last comma, to have semicolon in place.
-		fclose(file);
-		file = fopen(".favorites.csv", "r+");
-		fseek(file, -1, SEEK_END);
-		fprintf(file, ";");
-		fclose(file);
-		file = fopen(".favorites.csv", "a");
+		fprintf(file, "|END|");
 		return 0;
 	}
 	else
@@ -411,7 +405,7 @@ int add_comment(FILE *file)
 				else
 				{
 				fprintf(file, "'%s'", comment);
-				fprintf(file, ";\n");
+				fprintf(file, "|END|\n");
 				check_comment = true;
 				check_correct_comment = true;
 				free(comment);
