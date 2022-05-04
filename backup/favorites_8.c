@@ -5,7 +5,6 @@
 #include <ctype.h>
 
 #define INITIAL_STRING_LENGTH (2)
-#define nbr_of_notes 50
 
 //prototype
 char * get_string(void);
@@ -15,22 +14,11 @@ void get_fav(FILE *file);
 char * get_tag();
 int list_tag(FILE * file);
 int add_comment(FILE *file);
-int compute_nbr_of_favorites(FILE *file);
 
 // global variable
 char mexit[5] = "exit";
 char mstop[5] = "stop";
 char s[2] = "s";
-
-//struct
-typedef struct favorite 
-{
-	char * note;
-	char * comment;
-	char * arr_tag[30];
-}
-favorite;
-
 
 int main(void)
 {
@@ -46,8 +34,6 @@ int main(void)
 		}
 
 		printf("SEARCH TODO\n");
-
-		compute_nbr_of_favorites(file);
 
 		fclose(file);
 	}
@@ -450,22 +436,5 @@ int add_comment(FILE *file)
 	}
 	while (check_comment != true);
 	return 1;
-}
-
-int compute_nbr_of_favorites(FILE *file)
-{
-	int lines = 0;
-	char c;
-
-	do
-	{
-		c = fgetc(file);
-		
-		if (c == '\n')
-			lines ++;
-	}
-	while(c != EOF);
-
-	return lines;
 }
 
