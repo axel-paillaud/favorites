@@ -51,10 +51,13 @@ int main(void)
 
 		int nbr_of_notes = compute_nbr_of_notes(file);
 
-		notes arr_notes[nbr_of_notes];
+		notes *arr_notes = create_arr_notes(nbr_of_notes);
 
-		arr_notes[2].comment = "Une phrase suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuper méga longue, qu'est ce qu'il se passe ? Hahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahahahahaskaksakshkalshaksh";
+		arr_notes[2].comment = test;
+		arr_notes[1].comment = test2;
+
 		printf("%s\n", arr_notes[2].comment);
+		printf("%s\n", arr_notes[1].comment);
 
 		fclose(file);
 	}
@@ -476,7 +479,6 @@ int compute_nbr_of_notes(FILE *file)
 	return lines;
 }
 
-//maybe delete this one
 notes *create_arr_notes(int nbr_of_notes)
 {
 	notes *arr_notes[nbr_of_notes];
