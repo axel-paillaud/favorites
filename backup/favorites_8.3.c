@@ -24,9 +24,9 @@ char * get_tag();
 int list_tag(FILE * file);
 int add_comment(FILE *file);
 int compute_nbr_of_notes(FILE *file);
+notes *create_arr_notes(int nbr_of_notes);
 void insert_comment(notes *arr_notes);
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes);
-void free_arr_notes(notes *arr_notes, int nbr_of_notes);
 
 // global variable
 char mexit[5] = "exit";
@@ -49,12 +49,14 @@ int main(void)
 			return 1;
 		}
 
+		printf("SEARCH TODO\n");
+
 		int nbr_of_notes = compute_nbr_of_notes(file);
 
 		notes arr_notes[nbr_of_notes];
 
 		add_file_to_arr_notes(file, arr_notes, nbr_of_notes);
-		
+
 		for (int i = 0; i < nbr_of_notes; i++)
 		{
 			int j = 0;
@@ -66,9 +68,13 @@ int main(void)
 				j++;
 			}
 			while(arr_notes[i].arr_tag[j] != NULL);
+
+			printf("%s\n", arr_notes[i].comment);
 		}
 
-		free_arr_notes(arr_notes, nbr_of_notes);
+		free(lines);
+		free(note);
+		free(tag);
 
 		fclose(file);
 	}
@@ -490,6 +496,19 @@ int compute_nbr_of_notes(FILE *file)
 	return lines;
 }
 
+//maybe delete this one
+notes *create_arr_notes(int nbr_of_notes)
+{
+	notes *arr_notes[nbr_of_notes];
+
+	for (int i = 0; i < nbr_of_notes; i++)
+	{
+		arr_notes[i] = malloc(sizeof(notes));
+	}
+
+	return *arr_notes;
+}
+
 void insert_comment(notes *arr_notes)
 {
 	char * phrase = "Une phrase";
@@ -505,48 +524,40 @@ void insert_comment(notes *arr_notes)
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 {
 	char c;
+	int size = 2;
 	char *comment;
 	char *tmp;
 	char * tmp_tag[50];
+
+	lines = malloc(size);
 
 	rewind(file);
 
 	//For each notes, do
 	for (int i = 0; i < nbr_of_notes; i++)
 	{
-		int len_lines = 0;
+		int length = 0;
 
 		//while the note isn't finish, do 
-		//first, count the nbr of char of one line
 		do
 		{
 			c = fgetc(file);
-			len_lines++;
+			if (length >= size-1)
+			{
+				size *= 2;
+				lines = realloc(lines, size);
+			}
+			lines[length++] = c;
 		}
 		while(c != '\n' && c != EOF);
 
-		//rewind back to the beginning of the line
-		fseek(file, -len_lines, SEEK_CUR);
-
-		//create the line array, then add char to this array
-		char lines[len_lines + 1];
-
-		int cur_pos = 0;
-		do
-		{
-			c = fgetc(file);
-			lines[cur_pos] = c;
-			cur_pos++;
-		}
-		while(c != '\n' && c != EOF);
-
-		lines[len_lines] = '\0';
+		lines[length] = '\0';
 
 		tmp = strtok(lines, "|END|");
 
-		int size_note = strlen(tmp+1);
+		size = strlen(tmp+1);
 
-		note = malloc(size_note * sizeof(char));
+		note = malloc(size);
 
 		strcpy(note, tmp);
 
@@ -565,13 +576,14 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 			z++;
 		}
 		while(c != EOF && c != 0);
+		printf("Nombre de tag: %i\n", nbr_of_tag);
 
 		//add each tag to the array .tag of struct notes.
 		int tmp_pos = 0;
 		for (int x = 0; x < nbr_of_tag; x++)
 		{
 			int j = 0;
-			tag = malloc(50 * sizeof(char));
+			tag = malloc(50);
 			do
 			{
 				c = tmp[tmp_pos];
@@ -579,7 +591,7 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 				tmp_pos++;
 				j++;
 			}
-			while(c != ',' && c != EOF);
+			while(c != ',');
 
 			tag[j-1] = '\0';	
 
@@ -590,28 +602,7 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 	}
 }
 
-void free_arr_notes(notes *arr_notes, int nbr_of_notes)
-{
-	//for each notes, free note
-	for (int i = 0; i < nbr_of_notes; i++)
-	{
-		if (arr_notes[i].note != NULL)
-		{
-			free(arr_notes[i].note);
-		}
 
-		//for each tag, free tag
-		int j = 0;
-		char *ptr; 
-		do
-		{
-			ptr = arr_notes[i].arr_tag[j];
-			free(ptr);
-			j++;
-		}
-		while(ptr != NULL);
-	}
-}
 
 
 

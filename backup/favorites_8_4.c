@@ -505,44 +505,38 @@ void insert_comment(notes *arr_notes)
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 {
 	char c;
+	int size_lines = 2;
 	char *comment;
 	char *tmp;
 	char * tmp_tag[50];
+
+	lines = malloc(size_lines);
 
 	rewind(file);
 
 	//For each notes, do
 	for (int i = 0; i < nbr_of_notes; i++)
 	{
-		int len_lines = 0;
+		int length = 0;
 
 		//while the note isn't finish, do 
-		//first, count the nbr of char of one line
 		do
 		{
 			c = fgetc(file);
-			len_lines++;
+			if (length >= size_lines-1)
+			{
+				size_lines *= 2;
+				lines = realloc(lines, size_lines);
+			}
+			lines[length++] = c;
 		}
 		while(c != '\n' && c != EOF);
 
-		//rewind back to the beginning of the line
-		fseek(file, -len_lines, SEEK_CUR);
-
-		//create the line array, then add char to this array
-		char lines[len_lines + 1];
-
-		int cur_pos = 0;
-		do
-		{
-			c = fgetc(file);
-			lines[cur_pos] = c;
-			cur_pos++;
-		}
-		while(c != '\n' && c != EOF);
-
-		lines[len_lines] = '\0';
+		lines[length] = '\0';
 
 		tmp = strtok(lines, "|END|");
+
+		printf("%s\n", lines);
 
 		int size_note = strlen(tmp+1);
 
@@ -587,6 +581,9 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 
 			arr_notes[i].arr_tag[x + 1] = NULL;
 		}
+
+		free(lines);
+
 	}
 }
 
