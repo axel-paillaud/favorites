@@ -55,6 +55,22 @@ int main(void)
 		notes arr_notes[nbr_of_notes];
 
 		add_file_to_arr_notes(file, arr_notes, nbr_of_notes);
+		
+		for (int i = 0; i < nbr_of_notes; i++)
+		{
+			int j = 0;
+			printf("%s\n", arr_notes[i].note);
+
+			do
+			{
+				printf("%s\n", arr_notes[i].arr_tag[j]);
+				j++;
+			}
+			while(arr_notes[i].arr_tag[j] != NULL);
+
+			if(arr_notes[i].comment != NULL)
+				printf("%s\n", arr_notes[i].comment);
+		}
 
 		free_arr_notes(arr_notes, nbr_of_notes);
 
@@ -252,11 +268,6 @@ char * get_tag()
 			printf("Fail: the maximum lenght of a tag is 50 char.\n");
 			free(tag);
 		}
-		else if(check_exit(tag))
-		{
-			printf("Error: sorry, a tag cannot be exit, because it is the key word to exit the program.\n");
-			free(tag);
-		}
 
 		else
 		{
@@ -278,7 +289,7 @@ char * get_tag()
 			}
 		}
 	}
-	while (check_alpha != true||check_len != true||(check_exit(tag)) == true);
+	while (check_alpha != true || check_len != true);
 	
 	return tag;
 }
@@ -499,8 +510,10 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 {
 	char c;
 	char *comment;
-	char *tmp_part;
+	char *tmp;
+	char * tmp_tag[50];
 	char separator[6] = "|END|";
+	int section = 1;
 
 	rewind(file);
 
@@ -535,26 +548,28 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 
 		lines[len_lines] = '\0';
 
-		tmp_part = strpart(lines, separator, 1);
+		//testing my new fct strtok
 
-		int size_note = strlen(tmp_part);
+		strpart(lines, separator, section);
+
+		tmp = strtok(lines, "|END|");
+
+		int size_note = strlen(tmp);
 
 		note = malloc(size_note * sizeof(char));
 
-		strcpy(note, tmp_part);
+		strcpy(note, tmp);
 
 		arr_notes[i].note = note;
 
-		free(tmp_part);
-
-		tmp_part = strpart(lines, separator, 2);
+		tmp = strtok(NULL, "|END|");
 
 		//count the number of tag
 		int nbr_of_tag = 0;
 		int z = 0;
 		do
 		{
-			c = tmp_part[z];
+			c = tmp[z];
 			if(c == ',')
 				nbr_of_tag++;
 			z++;
@@ -569,7 +584,7 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 			tag = malloc(50 * sizeof(char));
 			do
 			{
-				c = tmp_part[tmp_pos];
+				c = tmp[tmp_pos];
 				tag[j] = c;
 				tmp_pos++;
 				j++;
@@ -583,24 +598,18 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 			arr_notes[i].arr_tag[x + 1] = NULL;
 		}
 
-		free(tmp_part);
-
 		//if comment, add comment
-		tmp_part = strpart(lines, separator, 3);
+		tmp = strtok(NULL, "|END|");
 		char check_comment;
-		check_comment = tmp_part[0];
+		check_comment = tmp[0];
 		if (check_comment == '\n')
-		{
 			arr_notes[i].comment = NULL;
-			free(tmp_part);
-		}
 		else
 		{
-			int size_comment = strlen(tmp_part);
+			int size_comment = strlen(tmp);
 			comment = malloc(size_comment * sizeof(char));
-			strcpy(comment, tmp_part);
+			strcpy(comment, tmp);
 			arr_notes[i].comment = comment;
-			free(tmp_part);
 		}
 	}
 }
@@ -633,6 +642,7 @@ void free_arr_notes(notes *arr_notes, int nbr_of_notes)
 char * strpart(char lines[], char separator[], int section)
 {
 	char * part;
+	char c;
 	char n = 'a';
 	int cmp_separator = 1;
 	int cur_pos = 0;
@@ -673,7 +683,6 @@ char * strpart(char lines[], char separator[], int section)
 			cur_pos++;	
 		};
 		
-		cmp_separator = 1;
 		//if we are in the section we wanted, malloc and return the strpart. Else, do it again until we are in the section we wanted.
 		if(cmp_section == section)
 		{
@@ -681,12 +690,10 @@ char * strpart(char lines[], char separator[], int section)
 			char tmp[len];
 
 			cur_pos -= len;
-
-			int n = 0;
+			cmp_separator = 1;
 
 			while(cmp_separator != 0)
 			{
-
 				for(int j = 0; j < size_separator; j++)
 				{
 					check_separator[j] = lines[cur_pos + j];
@@ -694,8 +701,7 @@ char * strpart(char lines[], char separator[], int section)
 
 				check_separator[size_separator - 1] = '\0';
 
-				tmp[n] = lines[cur_pos];
-				n++;
+				tmp[cur_pos] = lines[cur_pos];
 
 				cmp_separator = strcmp(check_separator, separator);
 
@@ -706,16 +712,15 @@ char * strpart(char lines[], char separator[], int section)
 
 			strcpy(part, tmp);
 
+			printf("%s\n", part);
+
 			return part;
 		}
 		else
 		{
 			cmp_section++;
-			cur_pos += (size_separator - 2);
 		}
 	}
-	part = NULL;
-	return part;
 }
 
 
