@@ -28,6 +28,7 @@ void insert_comment(notes *arr_notes);
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes);
 void free_arr_notes(notes *arr_notes, int nbr_of_notes);
 char * strpart(char lines[], char separator[], int section);
+void search_notes(int nbr_of_notes);
 
 // global variable
 char mexit[5] = "exit";
@@ -55,6 +56,8 @@ int main(void)
 		notes arr_notes[nbr_of_notes];
 
 		add_file_to_arr_notes(file, arr_notes, nbr_of_notes);
+
+		search_notes(nbr_of_notes);
 
 		free_arr_notes(arr_notes, nbr_of_notes);
 
@@ -718,7 +721,85 @@ char * strpart(char lines[], char separator[], int section)
 	return part;
 }
 
+void search_notes(int nbr_of_notes)
+{
+	char * input;
+	char space = ' ';
+	char separator[2] = " ";
+	char c;
+	int input_len;
+	int tag_len;
+	bool check_special_char = false;
+	bool check_correct_input = false;
+	char * search_tag[30];
+	char * tag;
+	int nbr_of_search_tag = 1;
+	int part = 1; // for the function strpart
 
+	printf("Please enter some tags: \n");
+
+	do
+	{
+		input = get_string();
+	
+		input_len = strlen(input);
+
+		//check for special char EXCEPT for space, convert uppercase to lowercase, count nbr of tag, check if nbr of tag < 30.
+		for(int i = 0; i < input_len; i++)
+		{
+			c = input[i];	
+			if(isupper(c))
+				input[i] = tolower(c);
+	
+			if(!(isalpha(c)) && c != space)
+				check_special_char = true;
+
+			if(c == space && (input[i + 1] != '\0'))
+				nbr_of_search_tag++;
+		}	
+
+		if(check_special_char == true)
+		{
+			printf("Fail: your tag must have only letters.\n");
+			check_correct_input = false;
+			free(input);
+		}
+		else if(input_len == 0)
+		{
+			printf("Fail: empty tag.\n");
+			check_correct_input = false;
+			free(input);
+		}
+		else if(nbr_of_search_tag > 30)
+		{
+			printf("Fail: too much tags.\n");
+			check_correct_input = false;
+			free(input);
+		}
+		else
+			check_correct_input = true;
+	}
+	while(check_correct_input == false);
+
+	//add each tags to the array search_tag
+	for(int i = 0; i < nbr_of_search_tag; i++)
+	{
+		tag = strpart(input, separator, part);
+
+		//check if tag is not > 50
+		tag_len = strlen(tag);
+		if(tag_len > 50)
+		{
+			printf("A tag is longer than 50 char and is ignored.\n");
+			free(tag);
+		}
+		else
+		{
+		search_tag[i] = tag; // Penser à free toute l'array search_tag
+		part++;
+		}
+	}
+}
 
 
 
