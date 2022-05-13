@@ -673,11 +673,6 @@ char * strpart(char lines[], char separator[], int section)
 
 			cmp_separator = strcmp(check_separator, separator);
 
-			if(check_separator[size_separator - 2] == '\0')
-			{
-				cmp_separator = 0;
-			}
-
 			len++;
 			cur_pos++;	
 		};
@@ -742,11 +737,11 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 	bool var_check_exit = false;
 	char * search_tag[30];
 	char * tag;
+	int nbr_of_search_tag = 1;
+	int part = 1; // for the function strpart
 
 	do
 	{
-		int nbr_of_search_tag = 1;
-
 		printf("Please enter some tags: \n");
 
 		do
@@ -759,41 +754,42 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 
 			if(var_check_exit != true)
 			{
-				//check for special char EXCEPT for space, convert uppercase to lowercase, count nbr of tag, check if nbr of tag < 30.
-				for(int i = 0; i < input_len; i++)
-				{
-					c = input[i];	
-					if(isupper(c))
-						input[i] = tolower(c);
-			
-					if(!(isalpha(c)) && c != space)
-						check_special_char = true;
-
-					if(c == space && (input[i + 1] != '\0'))
-						nbr_of_search_tag++;
-				}	
-
-				if(check_special_char == true)
-				{
-					printf("Fail: your tag must have only letters.\n");
-					check_correct_input = false;
-					free(input);
-				}
-				else if(input_len == 0)
-				{
-					printf("Fail: empty tag.\n");
-					check_correct_input = false;
-					free(input);
-				}
-				else if(nbr_of_search_tag > 30)
-				{
-					printf("Fail: too much tags.\n");
-					check_correct_input = false;
-					free(input);
-				}
-				else
-					check_correct_input = true;
+				
 			}
+			//check for special char EXCEPT for space, convert uppercase to lowercase, count nbr of tag, check if nbr of tag < 30.
+			for(int i = 0; i < input_len; i++)
+			{
+				c = input[i];	
+				if(isupper(c))
+					input[i] = tolower(c);
+		
+				if(!(isalpha(c)) && c != space)
+					check_special_char = true;
+
+				if(c == space && (input[i + 1] != '\0'))
+					nbr_of_search_tag++;
+			}	
+
+			if(check_special_char == true)
+			{
+				printf("Fail: your tag must have only letters.\n");
+				check_correct_input = false;
+				free(input);
+			}
+			else if(input_len == 0)
+			{
+				printf("Fail: empty tag.\n");
+				check_correct_input = false;
+				free(input);
+			}
+			else if(nbr_of_search_tag > 30)
+			{
+				printf("Fail: too much tags.\n");
+				check_correct_input = false;
+				free(input);
+			}
+			else
+				check_correct_input = true;
 		}
 		while(check_correct_input == false);
 
@@ -851,9 +847,8 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 			}
 			free(tag);
 		}
-		else if(var_check_exit != true)
+		else
 		{
-			int part = 1;
 			//add each tags to the array search_tag
 			for(int i = 0; i < nbr_of_search_tag; i++)
 			{
@@ -928,15 +923,12 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 			printf("\n");
 		}
 		//free search_tag
-		if(var_check_exit != true && nbr_of_search_tag > 1)
+		for(int i = 0; i < nbr_of_search_tag; i++)
 		{
-			for(int i = 0; i < nbr_of_search_tag; i++)
-			{
-				free(search_tag[i]);
-			}
+			free(search_tag[i]);
 		}
-
-	} while(var_check_exit != true);
+	}
+	while(var_check_exit != true);
 }
 
 void print_decoration(char decoration, int nbr)
