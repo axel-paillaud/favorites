@@ -1,0 +1,10 @@
+Voila une note.|END|tag,note,|END|Et voiçi un commentaire.|END|
+https://youtube.com/|END|site,sreaming,free,upload,video,|END|Un site d'upload de vidéo gratuit.|END|
+Mon nom est Axel, j'ai 27 ans.|END|tag,age,prenom,|END|Un commentaire.|END|
+J'écris une note sans commentaire.|END|un,tag,lol,sans,commentaire,|END|
+J'aime mon Atlas, c'est un chien trop beau et trop mignon.|END|chien,atlas,love,|END|
+false = 0, true = 1|END|programmation,true,false,c,|END|
+Je travail chez BICE, je suis payé 11€ de l'heure.|END|travail,electronique,salaire,|END|
+papa|END|la,|END|
+Je test une note avec le tag exit.|END|tag,test,ok,|END|
+Nous avons une maison avec un beau jardin.|END|tag,note,maison,chien,jardin,|END|J'ajoute en commentaire que j'aime Leila.|END|

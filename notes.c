@@ -124,7 +124,7 @@ bool search_or_add()
 			}
 			if (check_alpha == false)
 			{
-				printf("Only normal letters are allowed. Write 'search' or 's', 'add', or 'a'");
+				printf("Only normal letters are allowed. Write 'search' or 's', 'add', or 'a'\n");
 				free(user_input);
 			}
 			else
@@ -737,20 +737,21 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 	int input_len;
 	int tag_len;
 	int cmp_value;
-	bool check_special_char = false;
 	bool check_correct_input = false;
 	bool var_check_exit = false;
 	char * search_tag[30];
 	char * tag;
+	int nbr_of_search_tag;
 
 	do
 	{
-		int nbr_of_search_tag = 1;
-
 		printf("Please enter some tags: \n");
 
 		do
 		{
+			nbr_of_search_tag = 1;
+			bool check_special_char = false;
+
 			input = get_string();
 
 			var_check_exit = check_exit(input);
@@ -947,13 +948,5 @@ void print_decoration(char decoration, int nbr)
 	}
 	printf("\n");
 }
-
-
-
-
-
-
-
-
 
 
