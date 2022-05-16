@@ -7,3 +7,12 @@ false = 0, true = 1|END|programmation,true,false,c,|END|
 Je travail chez BICE, je suis payé 11€ de l'heure.|END|travail,electronique,salaire,|END|
 papa|END|la,|END|
 Je test une note avec le tag exit.|END|tag,test,ok,|END|
+<<<<<<< HEAD
+=======
+Nous avons une maison avec un beau jardin.|END|tag,note,maison,chien,jardin,|END|J'ajoute en commentaire que j'aime Leila.|END|
+Axel je t'aime.|END|amour,love,axel,|END|
+Site cool de live stream: twitch.com|END|stream,twitch,live,|END|
+J'écris une note en testant avec Valgrind|END|valgrind,memoire,memory,|END|
+Je fais un deuxième test avec valgrind. Le premier n'était pas concluant.|END|valgrind,test,|END|
+Le test est maintenant concluant (avec Valgrind).|END|valgrind,test,ok,|END|J'essaye avec un commentaire.|END|
+>>>>>>> add_search

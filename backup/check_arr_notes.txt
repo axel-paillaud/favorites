@@ -1,0 +1,15 @@
+		for (int i = 0; i < nbr_of_notes; i++)
+		{
+			int j = 0;
+			printf("%s\n", arr_notes[i].note);
+
+			do
+			{
+				printf("%s\n", arr_notes[i].arr_tag[j]);
+				j++;
+			}
+			while(arr_notes[i].arr_tag[j] != NULL);
+
+			if(arr_notes[i].comment != NULL)
+				printf("%s\n", arr_notes[i].comment);
+		}
