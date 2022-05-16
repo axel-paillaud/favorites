@@ -7,6 +7,7 @@
 #define INITIAL_STRING_LENGTH (2)
 
 //struct
+//test
 typedef struct notes 
 {
 	char * note;
