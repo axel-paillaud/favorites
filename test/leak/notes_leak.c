@@ -18,13 +18,13 @@ notes;
 //prototype
 char * get_string(void);
 bool search_or_add();
-bool check_exit_stop(char * var_fav);
 bool check_exit(char * var_fav);
 void get_fav(FILE *file);
 char * get_tag();
 int list_tag(FILE * file);
 int add_comment(FILE *file);
 int compute_nbr_of_notes(FILE *file);
+void insert_comment(notes *arr_notes);
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes);
 void free_arr_notes(notes *arr_notes, int nbr_of_notes);
 char * strpart(char lines[], char separator[], int section);
@@ -156,18 +156,6 @@ bool search_or_add()
 	}
 	while (check_correct_input == false);
 	return false;
-}
-
-bool check_exit_stop(char *var_fav)
-{
-	int value_cmp_exit = strcmp(mexit, var_fav);
-	int value_cmp_s = strcmp(mstop, var_fav);
-	int value_cmp_stop = strcmp(s, var_fav);
-
-	if (value_cmp_exit == 0||value_cmp_s == 0||value_cmp_stop == 0)
-	       return true;
-	else
-		return false;	
 }
 
 bool check_exit(char *var_fav)
@@ -464,20 +452,17 @@ int add_comment(FILE *file)
 		else if (cmpNo == 0||cmpN == 0)
 		{
 			check_comment = true;
-			free(answer_comment);
 			fprintf(file, "\n");
 		       	return 0;
 		}
 		else if (cmpExit == 0)
 		{
 			check_comment = true;
-			free(answer_comment);
 			return 0;
 		}
 		else
 		{
 			printf("Invalid choice\n");	
-			free(answer_comment);
 			check_comment = false;
 		}
 	}
@@ -500,6 +485,18 @@ int compute_nbr_of_notes(FILE *file)
 	while(c != EOF);
 
 	return lines;
+}
+
+void insert_comment(notes *arr_notes)
+{
+	char * phrase = "Une phrase";
+	char * phrase2 = "une autre phrase";
+	int x = 1;
+	int y = 2;
+
+	arr_notes[x].comment = phrase;
+	arr_notes[y].comment = phrase2;
+
 }
 
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
@@ -762,7 +759,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 
 			input = get_string();
 
-			var_check_exit = check_exit_stop(input);
+			var_check_exit = check_exit(input);
 			
 			input_len = strlen(input);
 
@@ -804,7 +801,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 					check_correct_input = true;
 			}
 		}
-		while(check_correct_input == false && var_check_exit != true);
+		while(check_correct_input == false);
 
 		//if only one tag, do simple linear search
 		if(nbr_of_search_tag == 1 && var_check_exit != true)
@@ -858,7 +855,6 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 				}
 				while((j < 30) && (arr_notes[i].arr_tag[j] != NULL) && (check_find != true));
 			}
-			printf("\n\n");
 			free(tag);
 		}
 		else if(var_check_exit != true)
@@ -886,7 +882,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 				}
 			}
 			free(input);
-			//linear search
+			//linear search with multiple tags
 			//for each notes, do
 			for(int cur_note = 0; cur_note < nbr_of_notes; cur_note++)
 			{
@@ -938,7 +934,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 					}
 				}
 			}
-			printf("\n\n\n");
+			printf("\n");
 		}
 		//free search_tag
 		if(var_check_exit != true && nbr_of_search_tag > 1)
@@ -948,7 +944,6 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 				free(search_tag[i]);
 			}
 		}
-
 	} while(var_check_exit != true);
 	free(input);
 }

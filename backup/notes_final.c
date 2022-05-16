@@ -25,6 +25,7 @@ char * get_tag();
 int list_tag(FILE * file);
 int add_comment(FILE *file);
 int compute_nbr_of_notes(FILE *file);
+void insert_comment(notes *arr_notes);
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes);
 void free_arr_notes(notes *arr_notes, int nbr_of_notes);
 char * strpart(char lines[], char separator[], int section);
@@ -464,20 +465,17 @@ int add_comment(FILE *file)
 		else if (cmpNo == 0||cmpN == 0)
 		{
 			check_comment = true;
-			free(answer_comment);
 			fprintf(file, "\n");
 		       	return 0;
 		}
 		else if (cmpExit == 0)
 		{
 			check_comment = true;
-			free(answer_comment);
 			return 0;
 		}
 		else
 		{
 			printf("Invalid choice\n");	
-			free(answer_comment);
 			check_comment = false;
 		}
 	}
@@ -500,6 +498,18 @@ int compute_nbr_of_notes(FILE *file)
 	while(c != EOF);
 
 	return lines;
+}
+
+void insert_comment(notes *arr_notes)
+{
+	char * phrase = "Une phrase";
+	char * phrase2 = "une autre phrase";
+	int x = 1;
+	int y = 2;
+
+	arr_notes[x].comment = phrase;
+	arr_notes[y].comment = phrase2;
+
 }
 
 void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
@@ -858,7 +868,6 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 				}
 				while((j < 30) && (arr_notes[i].arr_tag[j] != NULL) && (check_find != true));
 			}
-			printf("\n\n");
 			free(tag);
 		}
 		else if(var_check_exit != true)
@@ -938,7 +947,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 					}
 				}
 			}
-			printf("\n\n\n");
+			printf("\n");
 		}
 		//free search_tag
 		if(var_check_exit != true && nbr_of_search_tag > 1)
