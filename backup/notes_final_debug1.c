@@ -46,7 +46,7 @@ int main(void)
 
 	if (check_search_or_add == true)
 	{
-		FILE *file = fopen(".notes_db", "r");
+		FILE *file = fopen(".notes.db", "r");
 		if (file == NULL)
 		{
 			printf("Impossible to read the notes files.\n");
@@ -68,7 +68,7 @@ int main(void)
 
 	else
 	{
-		FILE *file = fopen(".notes_db", "a");
+		FILE *file = fopen(".notes.db", "a");
 		if (file == NULL)
 		{
 			printf("Impossible to open the favorites file.\n");
@@ -545,77 +545,71 @@ void add_file_to_arr_notes(FILE* file, notes *arr_notes, int nbr_of_notes)
 
 		tmp_part = strpart(lines, separator, 1);
 
-		if(tmp_part == NULL)
+		int size_note = strlen(tmp_part);
+
+		note = malloc(size_note * sizeof(char));
+
+		strcpy(note, tmp_part);
+
+		arr_notes[i].note = note;
+
+		free(tmp_part);
+
+		tmp_part = strpart(lines, separator, 2);
+
+		//count the number of tag
+		int nbr_of_tag = 0;
+		int z = 0;
+		do
 		{
-			arr_notes[i].note = NULL;
-			arr_notes[i].arr_tag[0] = NULL;
+			c = tmp_part[z];
+			if(c == ',')
+				nbr_of_tag++;
+			z++;
+		}
+		while(c != EOF && c != 0);
+
+		//add each tag to the array .tag of struct notes.
+		int tmp_pos = 0;
+		for (int x = 0; x < nbr_of_tag; x++)
+		{
+			int j = 0;
+			tag = malloc(50 * sizeof(char));
+			do
+			{
+				c = tmp_part[tmp_pos];
+				tag[j] = c;
+				tmp_pos++;
+				j++;
+			}
+			while(c != ',' && c != EOF);
+
+			tag[j-1] = '\0';	
+
+			arr_notes[i].arr_tag[x] = tag;
+
+			arr_notes[i].arr_tag[x + 1] = NULL;
+			
+		}
+
+		free(tmp_part);
+
+		//if comment, add comment
+		tmp_part = strpart(lines, separator, 3);
+		char check_comment;
+		check_comment = tmp_part[0];
+		if (check_comment == '\n'||check_comment == '\0')
+		{
 			arr_notes[i].comment = NULL;
+			free(tmp_part);
 		}
 		else
 		{
-			int size_note = strlen(tmp_part);
-
-			note = malloc(size_note * sizeof(char));
-
-			strcpy(note, tmp_part);
-
-			arr_notes[i].note = note;
-
+			int size_comment = strlen(tmp_part);
+			comment = malloc(size_comment * sizeof(char));
+			strcpy(comment, tmp_part);
+			arr_notes[i].comment = comment;
 			free(tmp_part);
-
-			tmp_part = strpart(lines, separator, 2);
-
-			//count the number of tag
-			int nbr_of_tag = 0;
-			int z = 0;
-			do
-			{
-				c = tmp_part[z];
-				if(c == ',')
-					nbr_of_tag++;
-				z++;
-			}
-			while(c != EOF && c != 0);
-
-			//add each tag to the array .tag of struct notes.
-			int tmp_pos = 0;
-			for (int x = 0; x < nbr_of_tag; x++)
-			{
-				int j = 0;
-				tag = malloc(50 * sizeof(char));
-				do
-				{
-					c = tmp_part[tmp_pos];
-					tag[j] = c;
-					tmp_pos++;
-					j++;
-				}
-				while(c != ',' && c != EOF);
-
-				tag[j-1] = '\0';	
-
-				arr_notes[i].arr_tag[x] = tag;
-
-				arr_notes[i].arr_tag[x + 1] = NULL;
-				
-			}
-
-			free(tmp_part);
-
-			//if comment, add comment
-			tmp_part = strpart(lines, separator, 3);
-			if(tmp_part == NULL)
-			{
-				arr_notes[i].comment = NULL;
-			}
-			else
-			{
-				int size_comment = strlen(tmp_part);
-				comment = malloc(size_comment * sizeof(char));
-				strcpy(comment, tmp_part);
-				arr_notes[i].comment = comment;
-				free(tmp_part);
-			}
 		}
 	}
 }
@@ -653,7 +647,6 @@ char * strpart(char lines[], char separator[], int section)
 	int cur_pos = 0;
 	int size_separator = 0;
 	int cmp_section = 1; //check if the section arg correspond to the current section
-	bool check_null = false; //check if error with separator (= no separator)
 
 	for (int i = 0; n != '\0'; i++)
 	{
@@ -705,7 +698,7 @@ char * strpart(char lines[], char separator[], int section)
 
 			int n = 0;
 
-			while(cmp_separator != 0&&check_null != true)
+			while(cmp_separator != 0)
 			{
 
 				for(int j = 0; j < size_separator; j++)
@@ -722,7 +715,7 @@ char * strpart(char lines[], char separator[], int section)
 
 				if(check_separator[size_separator - 2] == '\0')
 				{
-					check_null = true;
+					cmp_separator = 0;
 				}
 
 				cur_pos++;
@@ -732,15 +725,7 @@ char * strpart(char lines[], char separator[], int section)
 
 			strcpy(part, tmp);
 
-			if(check_null == true)
-			{
-				free(part);
-				return NULL;
-			}
-			else
-			{
-				return part;
-			}
+			return part;
 		}
 		else
 		{
@@ -762,10 +747,8 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 	int input_len;
 	int tag_len;
 	int cmp_value;
-	int part = 1;
 	bool check_correct_input = false;
 	bool var_check_exit = false;
-	bool check_note_null = false;
 	char * search_tag[30];
 	char * tag;
 	int nbr_of_search_tag;
@@ -803,7 +786,7 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 
 				if(check_special_char == true)
 				{
-					printf("Fail: your tag must have only letters. If multiple tag, please separate them only with white space.\n");
+					printf("Fail: your tag must have only letters.\n");
 					check_correct_input = false;
 					free(input);
 				}
@@ -813,50 +796,11 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 					check_correct_input = false;
 					free(input);
 				}
-				else if(nbr_of_search_tag == 1&&input_len > 49)
-				{
-					printf("Fail: A tag cannot be longer than 50 char.\n");
-					check_correct_input = false;
-					free(input);
-				}
 				else if(nbr_of_search_tag > 30)
 				{
 					printf("Fail: too much tags.\n");
 					check_correct_input = false;
 					free(input);
-				}
-				else if(nbr_of_search_tag > 1)
-				{
-					//little cheat for strpart to understand the end of the input search tag with the space separator
-					input[input_len] = ' ';
-					input[input_len + 1] = '\0';
-					check_correct_input = true;
-					part = 1;
-
-					//check if one tag is longer than 50 char
-					for(int i = 0; i < nbr_of_search_tag; i++)
-					{
-						tag = strpart(input, separator, part);
-						if(tag != NULL)
-						{
-							tag_len = strlen(tag);
-							if(tag_len > 49)
-							{
-								if(check_correct_input != false)
-								{
-									printf("Fail: A tag cannot be longer than 50 char.\n");
-								}
-								check_correct_input = false;
-							}
-						}
-						else
-						{
-							printf("Read error of one tag.\n");
-							check_correct_input = false;
-						}
-						free(tag);
-						part++;
-					}
 				}
 				else
 					check_correct_input = true;
@@ -871,6 +815,14 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 
 			tag_len = strlen(tag);
 
+			//check if tag is not > 50
+			if(tag_len > 49)
+			{
+				printf("A tag cannot be longer than 50 char.\n");
+				free(tag);
+				exit(4);
+			}	
+
 			//check if last char isn't space. If, remove it.
 			if(tag[tag_len - 1] == space)
 				tag[tag_len - 1] = '\0';	
@@ -883,140 +835,115 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 				bool check_find = false;
 				int j = 0;
 
-				check_note_null = true;
-
-				if((arr_notes[i].note != NULL)||(arr_notes[i].arr_tag[0] != NULL))
-				{
-					check_note_null = false;
 				//for each tag
-					do
+				do
+				{
+					tag_cmp = arr_notes[i].arr_tag[j];
+					if(tag_cmp != NULL)
 					{
-						tag_cmp = arr_notes[i].arr_tag[j];
-						if(tag_cmp != NULL)
+						cmp_value = strcmp(tag_cmp, tag);
+						
+						if(cmp_value == 0)
 						{
-							cmp_value = strcmp(tag_cmp, tag);
-							
-							if(cmp_value == 0)
-							{
-								//print some decoration
-								print_decoration('-', 35);
-								printf("%s\n", arr_notes[i].note);
+							//print some decoration
+							print_decoration('-', 35);
+							printf("%s\n", arr_notes[i].note);
 
-								if(arr_notes[i].comment != NULL)
-									printf("'%s'\n", arr_notes[i].comment);
+							if(arr_notes[i].comment != NULL)
+								printf("'%s'\n", arr_notes[i].comment);
 
-								print_decoration('-', 35);
+							print_decoration('-', 35);
 
-								printf("\n");
+							printf("\n");
 
-								check_find = true;
-							}
+							check_find = true;
 						}
-						j++;
 					}
-					while((j < 30) && (arr_notes[i].arr_tag[j] != NULL) && (check_find != true));
+					j++;
 				}
+				while((j < 30) && (arr_notes[i].arr_tag[j] != NULL) && (check_find != true));
 			}
-			if(check_note_null == false)
-			{
-				printf("\n\n");
-			}
+			printf("\n\n");
 			free(tag);
 		}
-		//multiple tag:
 		else if(var_check_exit != true)
 		{
-			//little cheat for strpart to understand the end of the input search tag with the space separator
-
-			part = 1;
+			int part = 1;
 			//add each tags to the array search_tag
 			for(int i = 0; i < nbr_of_search_tag; i++)
 			{
 				tag = strpart(input, separator, part);
-
-				//check if tag != NULL
-				if(tag == NULL)
+		
+				//check if tag is not > 50
+				tag_len = strlen(tag);
+				if(tag_len > 50)
 				{
+					printf("A tag is longer than 50 char and is ignored.\n");
 					search_tag[i] = NULL;
 					search_tag[i + 1] = NULL;
+					free(tag);
 				}
 				else
 				{
-					search_tag[i] = tag;
-					search_tag[i + 1] = NULL;
-					part++;
+				search_tag[i] = tag;
+				search_tag[i + 1] = NULL;
+				part++;
 				}
 			}
 			free(input);
-			//linear search 
+			//linear search
 			//for each notes, do
 			for(int cur_note = 0; cur_note < nbr_of_notes; cur_note++)
 			{
-				check_note_null = true;
-
-				if((arr_notes[cur_note].note != NULL)||(arr_notes[cur_note].arr_tag[0] != NULL))
+				bool arr_check_find[nbr_of_search_tag];
+				for(int set_false = 0; set_false < nbr_of_search_tag; set_false++)
 				{
-					check_note_null = false;
-					bool arr_check_find[nbr_of_search_tag];
-					for(int set_false = 0; set_false < nbr_of_search_tag; set_false++)
+					arr_check_find[set_false] = false;
+				}
+
+				//for each search tag, do
+				for(int cur_search_tag = 0; cur_search_tag < nbr_of_search_tag; cur_search_tag++)
+				{					
+					//for current tag inside arr_notes
+					int j = 0;
+
+					do
 					{
-						arr_check_find[set_false] = false;
-					}
+						tag = search_tag[cur_search_tag];
+						tag_cmp = arr_notes[cur_note].arr_tag[j];
+						cmp_value = strcmp(tag, tag_cmp);
 
-					//for each search tag, do
-					for(int cur_search_tag = 0; cur_search_tag < nbr_of_search_tag; cur_search_tag++)
-					{					
-						//for current tag inside arr_notes
-						int j = 0;
-
-						do
+						if(cmp_value == 0)
 						{
-							tag = search_tag[cur_search_tag];
-							if(tag != NULL)
-							{
-								tag_cmp = arr_notes[cur_note].arr_tag[j];
-								cmp_value = strcmp(tag, tag_cmp);
+							arr_check_find[cur_search_tag] = true;
+						} 
+						j++;
+					} while (arr_notes[cur_note].arr_tag[j] != NULL);					
+				}
 
-								if(cmp_value == 0)
-								{
-									arr_check_find[cur_search_tag] = true;
-								} 
-								j++;
-							}
-							else //if tag == NULL, set arr_check_find to true because we have to ignore it
-							{
-								arr_check_find[cur_search_tag] = true;
-							}
-						} while ((arr_notes[cur_note].arr_tag[j] != NULL)&&(search_tag[cur_search_tag] != NULL));					
-					}
-
-					//check if all the bool arr_check_find is true
-					bool check_find = true;
-					for(int chk = 0; chk < nbr_of_search_tag; chk++)
+				//check if all the bool arr_check_find is true
+				bool check_find = true;
+				for(int chk = 0; chk < nbr_of_search_tag; chk++)
+				{
+					if(arr_check_find[chk] == false)
+					check_find = false;
+				}
+					
+				//print if all tag is found
+				if(check_find == true)
+				{
+					printf("\n");
+					print_decoration('-', 35);
+					printf("%s\n", arr_notes[cur_note].note);
+					
+					if(arr_notes[cur_note].comment != NULL)
 					{
-						if(arr_check_find[chk] == false)
-						check_find = false;
-					}
-						
-					//print if all tag is found
-					if(check_find == true)
-					{
-						printf("\n");
+						printf("'%s'\n", arr_notes[cur_note].comment);
 						print_decoration('-', 35);
-						printf("%s\n", arr_notes[cur_note].note);
-						
-						if(arr_notes[cur_note].comment != NULL)
-						{
-							printf("'%s'\n", arr_notes[cur_note].comment);
-							print_decoration('-', 35);
-						}
 					}
 				}
 			}
-			if(check_note_null == false)
-			{
-				printf("\n\n\n");
-			}
+			printf("\n\n\n");
 		}
 		//free search_tag
 		if(var_check_exit != true && nbr_of_search_tag > 1)
