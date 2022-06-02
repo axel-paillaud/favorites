@@ -1,5 +1,5 @@
 # notes.c
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://youtu.be/HimcuEzp828>
 #### Description:
   
 **Summary**
