@@ -7,6 +7,7 @@
 #define INITIAL_STRING_LENGTH (2)
 
 //struct
+//test
 typedef struct notes 
 {
 	char * note;
@@ -1009,7 +1010,6 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 						printf("\n");
 						print_decoration('-', 35);
 						printf("%s\n", arr_notes[cur_note].note);
-						print_decoration('-', 35);
 						
 						if(arr_notes[cur_note].comment != NULL)
 						{
@@ -1045,4 +1045,5 @@ void print_decoration(char decoration, int nbr)
 	}
 	printf("\n");
 }
+
 

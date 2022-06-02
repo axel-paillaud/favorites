@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <signal.h>
+#include <unistd.h>
 
 #define INITIAL_STRING_LENGTH (2)
 
@@ -16,6 +18,7 @@ typedef struct notes
 notes;
 
 //prototype
+void sig_handler();
 char * get_string(void);
 bool search_or_add();
 bool check_exit_stop(char * var_fav);
@@ -42,6 +45,8 @@ char *comment;
 int main(void)
 {
 	bool check_search_or_add = search_or_add();
+
+	signal(SIGINT, sig_handler); //Register signal handler
 
 	if (check_search_or_add == true)
 	{
@@ -1009,7 +1014,6 @@ void search_notes(int nbr_of_notes, notes *arr_notes)
 						printf("\n");
 						print_decoration('-', 35);
 						printf("%s\n", arr_notes[cur_note].note);
-						print_decoration('-', 35);
 						
 						if(arr_notes[cur_note].comment != NULL)
 						{
@@ -1046,3 +1050,9 @@ void print_decoration(char decoration, int nbr)
 	printf("\n");
 }
 
+void sig_handler(int sig)
+{
+	printf("Vous avez tapé ctrl+C\n");
+	printf("Numéro de signal: %i\n", sig);
+	exit(55);
+}
