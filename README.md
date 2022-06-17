@@ -1,6 +1,9 @@
 # notes.c
 #### Video Demo:  <https://youtu.be/HimcuEzp828>
 #### Description:
+
+**nota**
+At the time, I didn't know that the git message convention was to write it in the present tense. I apologize for all the "adding" instead of "add"
   
 **Summary**
 
