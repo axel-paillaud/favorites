@@ -70,7 +70,7 @@ int main(void)
 		FILE *file = fopen(".notes_db", "a");
 		if (file == NULL)
 		{
-			printf("Impossible to open the favorites file.\n");
+			printf("Impossible to open the notes file.\n");
 			return 1;
 		}
 
